@@ -34,7 +34,7 @@ Licence URI: https://www.os-templates.com/template-terms
       <h1><a href="index.html"><strong>N</strong>ews <strong>M</strong>agazine</a></h1>
       <p>Free Website News</p>
     </div>
-    <div class="fl_right"><a href="#"><img src="https://s3.amazonaws.com/virginia.webrand.com/virginia/1754/0Mf198Wq6-T/618fc3e965cc94f23b5abbe39ae8137f.jpg?1508910801" style="width: 468px; height: 60px" alt="" /></a></div>
+    <div class="fl_right"><a href="#"><img src="<%= static_path + "/images/demo/468x60.gif" %>" alt="" /></a></div>
     <br class="clear" />
   </div>
 </div>
@@ -88,14 +88,14 @@ Licence URI: https://www.os-templates.com/template-terms
     </div>
     <div class="column">
       <ul class="latestnews">
-        <li><img src="<%= mess[mess.length-6].image%>" style="width: 100px; height: 100px" alt="" />
-          <p><strong><a href="/news/<%= mess[mess.length-6].idnews%>"><%= mess[mess.length-6].title%></a></strong><%= mess[mess.length-6].describe%> </p>
+        <li><img src="<%= mess[mess.length-3].image%>" style="width: 100px; height: 100px" alt="" />
+          <p><strong><a href="/news/<%= mess[mess.length-3].idnews%>"><%= mess[mess.length-3].title%></a></strong><%= mess[mess.length-3].describe%> </p>
         </li>
-        <li><img src="<%= mess[mess.length-7].image%>" style="width: 100px; height: 100px" alt="" />
-          <p><strong><a href="/news/<%= mess[mess.length-7].idnews%>"><%= mess[mess.length-7].title%></a></strong><%= mess[mess.length-7].describe%></p>
+        <li><img src="<%= mess[mess.length-2].image%>" style="width: 100px; height: 100px" alt="" />
+          <p><strong><a href="/news/<%= mess[mess.length-2].idnews%>"><%= mess[mess.length-2].title%></a></strong><%= mess[mess.length-2].describe%></p>
         </li>
-        <li class="last"><img src="<%= mess[mess.length-8].image%>" style="width: 100px; height: 100px" alt="" />
-          <p><strong><a href="/news/<%= mess[mess.length-8].idnews%>"><%= mess[mess.length-8].title%></a></strong> <%= mess[mess.length-8].describe%></p>
+        <li class="last"><img src="<%= mess[mess.length-4].image%>" style="width: 100px; height: 100px" alt="" />
+          <p><strong><a href="/news/<%= mess[mess.length-4].idnews%>"><%= mess[mess.length-4].title%></a></strong> <%= mess[mess.length-4].describe%></p>
         </li>
       </ul>
     </div>
@@ -105,84 +105,41 @@ Licence URI: https://www.os-templates.com/template-terms
 <!-- ####################################################################################################### -->
 <div class="wrapper">
   <div id="adblock">
-    <div class="fl_left"><a href="#"><img src="http://www.fragment7.com/feb-welcome-bonus/468x60.gif" style="width: 468px; height: 60px" alt="" /></a></div>
-    <div class="fl_right"><a href="#"><img src="https://media.giphy.com/media/taU3S99hRDg4g/200.gif" style="width: 468px; height: 60px" alt="" /></a></div>
+    <div class="fl_left"><a href="#"><img src="images/demo/468x60.gif" alt="" /></a></div>
+    <div class="fl_right"><a href="#"><img src="images/demo/468x60.gif" alt="" /></a></div>
     <br class="clear" />
   </div>
   <div id="hpage_cats">
+    <%for (var key in mess){%>
+    <%if (key % 2 == 0) {%>
     <div class="fl_left">
-      <h2><a href="#"><%= mess[mess.length-9].type%> &raquo;</a></h2>
-      <img src="<%= mess[mess.length-9].image%>" style="width: 100px; height: 100px" alt="" />
-      <p><strong><a href="/news/<%= mess[mess.length-9].idnews%>"><%= mess[mess.length-9].title%></a></strong></p>
-      <p><%= mess[mess.length-9].describe%></p>
+      <img src="<%= mess[key].image%>" style="width: 100px; height: 100px" alt="" />
+      <p><strong><a href="/news/<%= mess[key].idnews%>"><%= mess[key].title%></a></strong></p>
+      <p><%= mess[key].describe%></p>
     </div>
+    <%} else {%>
     <div class="fl_right">
-      <h2><a href="#"><%= mess[mess.length-10].type%> &raquo;</a></h2>
-      <img src="<%= mess[mess.length-10].image%>" style="width: 100px; height: 100px" alt="" />
-      <p><strong><a href="/news/<%= mess[mess.length-10].idnews%>"><%= mess[mess.length-10].title%></a></strong></p>
-      <p><%= mess[mess.length-10].describe%></p>
+      <img src="<%= mess[key].image%>" style="width: 100px; height: 100px" alt="" />
+      <p><strong><a href="/news/<%= mess[key].idnews%>"><%= mess[key].title%></a></strong></p>
+      <p><%= mess[key].describe%></p>
     </div>
     <br class="clear" />
-    <div class="fl_left">
-      <h2><a href="#"><%= mess[mess.length-11].type%> &raquo;</a></h2>
-      <img src="<%= mess[mess.length-11].image%>" style="width: 100px; height: 100px" alt="" />
-      <p><strong><a href="/news/<%= mess[mess.length-11].idnews%>"><%= mess[mess.length-11].title%></a></strong></p>
-      <p><%= mess[mess.length-11].describe%></p>
-    </div>
-    <div class="fl_right">
-      <h2><a href="#"><%= mess[mess.length-12].type%> &raquo;</a></h2>
-      <img src="<%= mess[mess.length-12].image%>" style="width: 100px; height: 100px" alt="" />
-      <p><strong><a href="/news/<%= mess[mess.length-12].idnews%>"><%= mess[mess.length-12].title%></a></strong></p>
-      <p><%= mess[mess.length-12].describe%></p>
-    </div>
-    <br class="clear" />
+    <%}}%>
   </div>
 </div>
-<!-- ####################################################################################################### -->
-<div class="wrapper">
-  <div class="container">
-    <div class="content">
-      <div id="hpage_latest">
-        <h2>Feugiatrutrum rhoncus semper</h2>
-        <ul>
-          <li><img src="<%= mess[mess.length-13].image%>" style="width: 190px; height: 130px" alt="" />
-            <p><strong><%= mess[mess.length-13].title%></strong></p>
-            <p><%= mess[mess.length-13].describe%></p>
-            <p class="readmore"><a href="/news/<%= mess[mess.length-13].idnews%>">Xem chi tiet &raquo;</a></p>
-          </li>
-          <li><img src="<%= mess[mess.length-14].image%>" style="width: 190px; height: 130px" alt="" />
-            <p><strong><%= mess[mess.length-14].title%></strong></p>
-            <p><%= mess[mess.length-14].describe%></p>
-            <p class="readmore"><a href="/news/<%= mess[mess.length-14].idnews%>">Xem chi tiet &raquo;</a></p>
-          </li>
-          <li class="last"><img src="<%= mess[mess.length-15].image%>" style="width: 190px; height: 130px" alt="" />
-            <p><strong><%= mess[mess.length-15].title%></strong></p>
-            <p><%= mess[mess.length-15].describe%></p>
-            <p class="readmore"><a href="/news/<%= mess[mess.length-15].idnews%>">Xem chi tiet &raquo;</a></p>
-          </li>
-        </ul>
-        <br class="clear" />
-      </div>
-    </div>
-    <div class="column">
-      <div class="holder"><a href="#"><img src="https://www.bannersmall.com/wp-content/uploads/2018/02/port-gif300250-00005.gif"style="width: 300px; height: 250px" alt="" /></a></div>
-      <div class="holder"><a href="#"><img src="http://www.performancespace.com.au/wp-content/uploads/2016/01/buy-tickets-button-1024x274.gif"style="width: 300px; height: 80px" alt="" /></a></div>
-    </div>
-    <br class="clear" />
-  </div>
-</div>
+
 <!-- ####################################################################################################### -->
 <div class="wrapper">
   <div id="footer">
     <div class="footbox">
-      <h2>Lacus interdum</h2>
+      <h2>Du lịch</h2>
       <ul>
-        <li><a href="#">Lorem ipsum dolor</a></li>
-        <li><a href="#">Suspendisse in neque</a></li>
-        <li><a href="#">Praesent et eros</a></li>
-        <li><a href="#">Lorem ipsum dolor</a></li>
-        <li><a href="#">Suspendisse in neque</a></li>
-        <li class="last"><a href="#">Praesent et eros</a></li>
+        <li><a href="#">Vinh Ha Long</a></li>
+        <li><a href="#">Nha trang</a></li>
+        <li><a href="#">Vung tau</a></li>
+        <li><a href="#">Phan thiết</a></li>
+        <li><a href="#">Kiên giang</a></li>
+        <li class="last"><a href="#">Hà tiên</a></li>
       </ul>
     </div>
     <div class="footbox">

@@ -34,7 +34,7 @@ Licence URI: https://www.os-templates.com/template-terms
       <h1><a href="index.html"><strong>N</strong>ews <strong>M</strong>agazine</a></h1>
       <p>Free Website News</p>
     </div>
-    <div class="fl_right"><a href="#"><img src="https://s3.amazonaws.com/virginia.webrand.com/virginia/1754/0Mf198Wq6-T/618fc3e965cc94f23b5abbe39ae8137f.jpg?1508910801" style="width: 468px; height: 60px" alt="" /></a></div>
+    <div class="fl_right"><a href="#"><img src="<%= static_path + "/images/demo/468x60.gif" %>" alt="" /></a></div>
     <br class="clear" />
   </div>
 </div>
@@ -69,35 +69,75 @@ Licence URI: https://www.os-templates.com/template-terms
   </div>
 </div>
 <!-- ####################################################################################################### -->
+
+<!-- ####################################################################################################### -->
 <div class="wrapper">
   <div class="container">
     <div class="content">
-      <div id="featured_slide">
-        <ul id="featurednews">
-          <%for(var i= mess.length-1 ; i>= mess.length-5;i--){%>
-          <li><img src="<%= mess[i].image%>" style="width: 100px; height: 100px" alt="" />
-            <div class="panel-overlay">
-              <h2><%= mess[i].title%></h2>
-              <p><%= mess[i].describe%><br />
-                <a href="/news/<%= mess[i].idnews%>">Xem chi tiet &raquo;</a></p>
-            </div>
+      <h1><%= mess[0].title%></h1>
+      <p><strong><%= mess[0].describe%> </strong></p>
+      <img class="imgr" src="<%= mess[0].image%>"  alt="" width="600" height="500" />
+      <p><%= mess[0].content%></p>
+
+      <div id="comments">
+        <h2>Comments</h2>
+        <ul class="commentlist">
+
+          <li class="comment_odd">
+            <div class="author"><img class="avatar" src="https://cdna.artstation.com/p/assets/images/images/003/731/234/original/pontus-ornemark-sunglasses-man-walking-animation.gif?1476900023" width="32" height="32" alt="" /><span class="name"><a href="#">A Name</a></span> <span class="wrote">wrote:</span></div>
+            <div class="submitdate"><a href="#">August 4, 2019 at 8:35 am</a></div>
+            <p>This is an example of a comment made on a post. You can either edit the comment, delete the comment or reply to the comment. Use this as a place to respond to the post or to share what you are thinking.</p>
           </li>
-          <%}%>
+
+          <li class="comment_even">
+            <div class="author"><img class="avatar" src="https://cdna.artstation.com/p/assets/images/images/003/235/548/original/jamie-fox-girlpoint-animatedmassive.gif?1471445378" width="32" height="32" alt="" /><span class="name"><a href="#">A Name</a></span> <span class="wrote">wrote:</span></div>
+            <div class="submitdate"><a href="#">August 4, 2019 at 8:35 am</a></div>
+            <p>This is an example of a comment made on a post. You can either edit the comment, delete the comment or reply to the comment. Use this as a place to respond to the post or to share what you are thinking.</p>
+          </li>
+          <li class="comment_odd">
+            <div class="author"><img class="avatar" src="https://cdna.artstation.com/p/assets/images/images/003/731/376/original/pontus-ornemark-alien-attack-can-man-2.gif?1476901032" width="32" height="32" alt="" /><span class="name"><a href="#">A Name</a></span> <span class="wrote">wrote:</span></div>
+            <div class="submitdate"><a href="#">August 4, 2019 at 8:35 am</a></div>
+            <p>This is an example of a comment made on a post. You can either edit the comment, delete the comment or reply to the comment. Use this as a place to respond to the post or to share what you are thinking.</p>
+          </li>
         </ul>
+      </div>
+      <h2>Write A Comment</h2>
+      <div id="respond">
+        <form action="#" method="post">
+          <p>
+            <input type="text" name="name" id="name" value="" size="22" />
+            <label for="name"><small>Name (required)</small></label>
+          </p>
+          <p>
+            <input type="text" name="email" id="email" value="" size="22" />
+            <label for="email"><small>Mail (required)</small></label>
+          </p>
+          <p>
+            <textarea name="comment" id="comment" cols="100%" rows="10"></textarea>
+            <label for="comment" style="display:none;"><small>Comment (required)</small></label>
+          </p>
+          <p>
+            <input name="submit" type="submit" id="submit" value="Submit Form" />
+            &nbsp;
+            <input name="reset" type="reset" id="reset" tabindex="5" value="Reset Form" />
+          </p>
+        </form>
       </div>
     </div>
     <div class="column">
-      <ul class="latestnews">
-        <li><img src="<%= mess[mess.length-6].image%>" style="width: 100px; height: 100px" alt="" />
-          <p><strong><a href="/news/<%= mess[mess.length-6].idnews%>"><%= mess[mess.length-6].title%></a></strong><%= mess[mess.length-6].describe%> </p>
-        </li>
-        <li><img src="<%= mess[mess.length-7].image%>" style="width: 100px; height: 100px" alt="" />
-          <p><strong><a href="/news/<%= mess[mess.length-7].idnews%>"><%= mess[mess.length-7].title%></a></strong><%= mess[mess.length-7].describe%></p>
-        </li>
-        <li class="last"><img src="<%= mess[mess.length-8].image%>" style="width: 100px; height: 100px" alt="" />
-          <p><strong><a href="/news/<%= mess[mess.length-8].idnews%>"><%= mess[mess.length-8].title%></a></strong> <%= mess[mess.length-8].describe%></p>
-        </li>
-      </ul>
+        <%for (var i = list.length-1; i>list.length-5;i--){%>
+      <div id="featured">
+        <ul>
+          <li>
+            <h2><%= list[i].title%></h2>
+            <p class="imgholder"><img src="<%= list[i].image%>" width="240" height="90" alt="" /></p>
+            <p><%= list[i].describe%></p>
+            <p class="readmore"><a href="/news/<%= list[i].idnews%>">Xem chi tiet &raquo;</a></p>
+          </li>
+        </ul>
+      </div>
+          <%}%>
+
     </div>
     <br class="clear" />
   </div>
@@ -105,69 +145,6 @@ Licence URI: https://www.os-templates.com/template-terms
 <!-- ####################################################################################################### -->
 <div class="wrapper">
   <div id="adblock">
-    <div class="fl_left"><a href="#"><img src="http://www.fragment7.com/feb-welcome-bonus/468x60.gif" style="width: 468px; height: 60px" alt="" /></a></div>
-    <div class="fl_right"><a href="#"><img src="https://media.giphy.com/media/taU3S99hRDg4g/200.gif" style="width: 468px; height: 60px" alt="" /></a></div>
-    <br class="clear" />
-  </div>
-  <div id="hpage_cats">
-    <div class="fl_left">
-      <h2><a href="#"><%= mess[mess.length-9].type%> &raquo;</a></h2>
-      <img src="<%= mess[mess.length-9].image%>" style="width: 100px; height: 100px" alt="" />
-      <p><strong><a href="/news/<%= mess[mess.length-9].idnews%>"><%= mess[mess.length-9].title%></a></strong></p>
-      <p><%= mess[mess.length-9].describe%></p>
-    </div>
-    <div class="fl_right">
-      <h2><a href="#"><%= mess[mess.length-10].type%> &raquo;</a></h2>
-      <img src="<%= mess[mess.length-10].image%>" style="width: 100px; height: 100px" alt="" />
-      <p><strong><a href="/news/<%= mess[mess.length-10].idnews%>"><%= mess[mess.length-10].title%></a></strong></p>
-      <p><%= mess[mess.length-10].describe%></p>
-    </div>
-    <br class="clear" />
-    <div class="fl_left">
-      <h2><a href="#"><%= mess[mess.length-11].type%> &raquo;</a></h2>
-      <img src="<%= mess[mess.length-11].image%>" style="width: 100px; height: 100px" alt="" />
-      <p><strong><a href="/news/<%= mess[mess.length-11].idnews%>"><%= mess[mess.length-11].title%></a></strong></p>
-      <p><%= mess[mess.length-11].describe%></p>
-    </div>
-    <div class="fl_right">
-      <h2><a href="#"><%= mess[mess.length-12].type%> &raquo;</a></h2>
-      <img src="<%= mess[mess.length-12].image%>" style="width: 100px; height: 100px" alt="" />
-      <p><strong><a href="/news/<%= mess[mess.length-12].idnews%>"><%= mess[mess.length-12].title%></a></strong></p>
-      <p><%= mess[mess.length-12].describe%></p>
-    </div>
-    <br class="clear" />
-  </div>
-</div>
-<!-- ####################################################################################################### -->
-<div class="wrapper">
-  <div class="container">
-    <div class="content">
-      <div id="hpage_latest">
-        <h2>Feugiatrutrum rhoncus semper</h2>
-        <ul>
-          <li><img src="<%= mess[mess.length-13].image%>" style="width: 190px; height: 130px" alt="" />
-            <p><strong><%= mess[mess.length-13].title%></strong></p>
-            <p><%= mess[mess.length-13].describe%></p>
-            <p class="readmore"><a href="/news/<%= mess[mess.length-13].idnews%>">Xem chi tiet &raquo;</a></p>
-          </li>
-          <li><img src="<%= mess[mess.length-14].image%>" style="width: 190px; height: 130px" alt="" />
-            <p><strong><%= mess[mess.length-14].title%></strong></p>
-            <p><%= mess[mess.length-14].describe%></p>
-            <p class="readmore"><a href="/news/<%= mess[mess.length-14].idnews%>">Xem chi tiet &raquo;</a></p>
-          </li>
-          <li class="last"><img src="<%= mess[mess.length-15].image%>" style="width: 190px; height: 130px" alt="" />
-            <p><strong><%= mess[mess.length-15].title%></strong></p>
-            <p><%= mess[mess.length-15].describe%></p>
-            <p class="readmore"><a href="/news/<%= mess[mess.length-15].idnews%>">Xem chi tiet &raquo;</a></p>
-          </li>
-        </ul>
-        <br class="clear" />
-      </div>
-    </div>
-    <div class="column">
-      <div class="holder"><a href="#"><img src="https://www.bannersmall.com/wp-content/uploads/2018/02/port-gif300250-00005.gif"style="width: 300px; height: 250px" alt="" /></a></div>
-      <div class="holder"><a href="#"><img src="http://www.performancespace.com.au/wp-content/uploads/2016/01/buy-tickets-button-1024x274.gif"style="width: 300px; height: 80px" alt="" /></a></div>
-    </div>
     <br class="clear" />
   </div>
 </div>

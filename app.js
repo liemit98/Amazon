@@ -5,7 +5,7 @@
     var mysql = require('mysql');
 
     AWS.config.region = process.env.REGION
-    
+
 
 var connection = mysql.createConnection({
   host     : 'dientoandammaynhom20.clpluyptqi3c.us-east-1.rds.amazonaws.com',
@@ -21,11 +21,17 @@ connection.connect(function(err) {
             }
             console.log('Connected to database.');
           });
-          
+
 var type = [];
 connection.query("SELECT * FROM type",function(err,result,fields){
   if(err) throw err;
   type=result;
+})
+
+var list = [];
+connection.query("SELECT * FROM news",function(err,result,fields){
+  if(err) throw err;
+  list=result;
 })
 
     var app = express();
@@ -37,50 +43,47 @@ connection.query("SELECT * FROM type",function(err,result,fields){
 
 
     app.get('/', function(req, res) {
-        var mess = [];   
+        var mess = [];
         connection.query("SELECT * FROM news", function (err, result, fields) {
             if (err) throw err;
-            console.log(result);
+            //console.log(result);
               res.render('home', {
                 static_path: 'static',
                 theme: process.env.THEME || 'flatly',
                 flask_debug: process.env.FLASK_DEBUG || 'false',
                 mess : result,
                 type : type
-            });     
-        })     
+            });
+        })
     });
 
     app.get('/types/:type', function(req, res) {
-      var mess = [];   
-      connection.query("SELECT * FROM news where type like (select name from type where idtype ="+ req.params.type+")", function (err, result, fields) {
+      var mess = [];
+      connection.query("SELECT * FROM DataNews.news where type like (select type.name from DataNews.type where idtype ="+req.params.type+")", function (err, result, fields) {
           if (err) throw err;
-          console.log(result);
-          res.send(result)
-            // res.render('home', {
-            //   static_path: 'static',
-            //   theme: process.env.THEME || 'flatly',
-            //   flask_debug: process.env.FLASK_DEBUG || 'false',
-            //   mess : result,
-            //   type : type
-          // });     
-      })     
+            res.render('newstype', {
+              static_path: 'static',
+              theme: process.env.THEME || 'flatly',
+              flask_debug: process.env.FLASK_DEBUG || 'false',
+              mess : result,
+              type : type
+          });
+      })
   });
 
     app.get('/news/:id', function(req, res) {
-      var mess = [];   
+      var mess = [];
       connection.query("SELECT * FROM news where idnews="+ req.params.id, function (err, result, fields) {
           if (err) throw err;
-          console.log(result);
-          res.send(result)
-            // res.render('home', {
-            //   static_path: 'static',
-            //   theme: process.env.THEME || 'flatly',
-            //   flask_debug: process.env.FLASK_DEBUG || 'false',
-            //   mess : result,
-            //   type : type
-          // });     
-      })     
+            res.render('Content', {
+              static_path: 'static',
+              theme: process.env.THEME || 'flatly',
+              flask_debug: process.env.FLASK_DEBUG || 'false',
+              mess : result,
+              type : type,
+              list : list
+          });
+      })
   });
     var port = process.env.PORT || 3000;
 
