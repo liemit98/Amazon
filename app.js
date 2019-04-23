@@ -1,6 +1,7 @@
 
     var AWS = require('aws-sdk');
     var express = require('express');
+    var path = require('path');
     var bodyParser = require('body-parser');
     var mysql = require('mysql');
 
@@ -40,6 +41,7 @@ connection.query("SELECT * FROM news",function(err,result,fields){
     app.set('views', __dirname + '/views');
     app.use(bodyParser.urlencoded({extended:false}));
     app.use(bodyParser.json())
+    app.use(express.static(path.join(__dirname, 'static')));
 
 
     app.get('/', function(req, res) {
@@ -85,6 +87,35 @@ connection.query("SELECT * FROM news",function(err,result,fields){
           });
       })
   });
+
+  app.get('/admin/addnews', function(req, res) {
+    var mess = [];   
+    connection.query("SELECT * FROM type", function (err, result, fields) {
+        if (err) throw err;
+        console.log(result);
+          res.render('addnews', {
+            static_path: 'static',
+            theme: process.env.THEME || 'flatly',
+            flask_debug: process.env.FLASK_DEBUG || 'false',
+            types : result,
+        });     
+    })     
+});
+
+  app.post('/news',function(req,res){
+    console.log("Hello");
+    
+    var title = req.body.title;
+    var type = req.body.type;
+    var describe = req.body.describe;
+    var content = req.body.content;
+    var image = req.body.image;
+    console.log(type + " " +title+" "+describe+" "+content+" "+image);
+    var query = "INSERT INTO `news` (first_name, last_name, position, number, image, user_name) VALUES ('" +
+    first_name + "', '" + last_name + "', '" + position + "', '" + number + "', '" + image_name + "', '" + username + "')";
+    res.status(201).end();
+  });
+
     var port = process.env.PORT || 3000;
 
     var server = app.listen(port, function () {
