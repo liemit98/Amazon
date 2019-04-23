@@ -24,7 +24,6 @@ Licence URI: https://www.os-templates.com/template-terms
 <div class="wrapper col0">
   <div id="topline">
     <p>Tel: 0123 456789 | Mail: liemhung@domain.com</p>
-    <p><%= mess %></p>
     <br class="clear" />
   </div>
 </div>
@@ -45,14 +44,14 @@ Licence URI: https://www.os-templates.com/template-terms
     <div id="topnav">
       <ul>
         <li class="active"><a href="index.html">Home</a></li>
-        <li><a href="pages/style-demo.html">Phap Luat</a></li>
-        <li><a href="pages/full-width.html">Thoi Su</a></li>
-        <li><a href="pages/full-width.html">Liem</a></li>
+        <li><a href="pages/style-demo.html"><%= type[0].name%></a></li>
+        <li><a href="pages/full-width.html"><%= type[1].name%></a></li>
+        <li><a href="pages/full-width.html"><%= type[2].name%></a></li>
         <li class="last"><a href="#">Them</a>
           <ul>
-            <li><a href="#">The Thao</a></li>
-            <li><a href="#">Du Lich</a></li>
-            <li><a href="#">Thoi Trang</a></li>
+            <li><a href="#"><%= type[3].name%></a></li>
+            <li><a href="#"><%= type[4].name%></a></li>
+            <li><a href="#"><%= type[5].name%></a></li>
           </ul>
         </li>
       </ul>
@@ -75,38 +74,38 @@ Licence URI: https://www.os-templates.com/template-terms
     <div class="content">
       <div id="featured_slide">
         <ul id="featurednews">
-          <li><img src="<%= static_path + "/images/demo/1.gif" %>" alt="" />
+          <li><img src="<%= mess[0].image%>" style="width: 100px; height: 100px" alt="" />
             <div class="panel-overlay">
-              <h2>Nullamlacus dui ipsum</h2>
-              <p>Temperinte interdum sempus odio urna eget curabitur semper convallis nunc laoreet.<br />
+              <h2><%= mess[0].title%></h2>
+              <p><%= mess[0].describe%><br />
                 <a href="#">Continue Reading &raquo;</a></p>
             </div>
           </li>
-          <li><img src="<%= static_path + "/images/demo/2.gif" %>" alt="" />
+          <li><img src="<%= mess[1].image%>" style="width: 100px; height: 100px" alt="" />
             <div class="panel-overlay">
-              <h2>Aliquatjusto quisque nam</h2>
-              <p>Temperinte interdum sempus odio urna eget curabitur semper convallis nunc laoreet.<br />
+              <h2><%= mess[1].title%></h2>
+              <p><%= mess[1].describe%><br />
                 <a href="#">Continue Reading &raquo;</a></p>
             </div>
           </li>
-          <li><img src="<%= static_path + "/images/demo/3.gif" %>" alt="" />
+          <li><img src="<%= mess[2].image%>" style="width: 100px; height: 100px" alt="" />
             <div class="panel-overlay">
-              <h2>Dapiensociis temper donec</h2>
-              <p>Temperinte interdum sempus odio urna eget curabitur semper convallis nunc laoreet.<br />
+              <h2><%= mess[2].title%></h2>
+              <p><%= mess[2].describe%><br />
                 <a href="#">Continue Reading &raquo;</a></p>
             </div>
           </li>
-          <li><img src="<%= static_path + "/images/demo/4.gif" %>" alt="" />
+          <li><img src="<%= mess[3].image%>" style="width: 100px; height: 100px" alt="" />
             <div class="panel-overlay">
-              <h2>Semvelit nonummy odio tempus</h2>
-              <p>Justolacus eger at pede felit in dictum sempus elit curabitur ipsum. Ametpellentum.<br />
+              <h2><%= mess[3].title%></h2>
+              <p><%= mess[3].describe%><br />
                 <a href="#">Continue Reading &raquo;</a></p>
             </div>
           </li>
-          <li><img src="<%= static_path + "/images/demo/5.gif" %>" alt="" />
+          <li><img src="<%= mess[4].image%>" style="width: 100px; height: 100px" alt="" />
             <div class="panel-overlay">
-              <h2>Pedefamet orci orci quisque</h2>
-              <p>Nonnam aenenasce morbi liberos malesuada risus id donec volutpat estibulum curabitae.<br />
+              <h2><%= mess[4].title%></h2>
+              <p><%= mess[4].describe%><br />
                 <a href="#">Continue Reading &raquo;</a></p>
             </div>
           </li>
@@ -115,14 +114,14 @@ Licence URI: https://www.os-templates.com/template-terms
     </div>
     <div class="column">
       <ul class="latestnews">
-        <li><img src="<%= static_path + "/images/demo/100x100.gif" %>"  alt="" />
-          <p><strong><a href="#">Indonectetus facilis leo.</a></strong> Nullamlacus dui ipsum cons eque loborttis non euis que morbi penas dapibulum orna. Urnaultrices quis curabitur phasellentesque.</p>
+        <li><img src="<%= mess[5].image%>" style="width: 100px; height: 100px" alt="" />
+          <p><strong><a href="#"><%= mess[5].title%></a></strong><%= mess[5].describe%> </p>
         </li>
-        <li><img src="<%= static_path + "/images/demo/100x100.gif" %>" alt="" />
-          <p><strong><a href="#">Indonectetus facilis leo.</a></strong> Nullamlacus dui ipsum cons eque loborttis non euis que morbi penas dapibulum orna. Urnaultrices quis curabitur phasellentesque.</p>
+        <li><img src="<%= mess[6].image%>" style="width: 100px; height: 100px" alt="" />
+          <p><strong><a href="#"><%= mess[6].title%></a></strong><%= mess[6].describe%></p>
         </li>
-        <li class="last"><img src="<%= static_path + "/images/demo/100x100.gif" %>" alt="" />
-          <p><strong><a href="#">Indonectetus facilis leo.</a></strong> Nullamlacus dui ipsum cons eque loborttis non euis que morbi penas dapibulum orna. Urnaultrices quis curabitur phasellentesque.</p>
+        <li class="last"><img src="<%= mess[7].image%>" style="width: 100px; height: 100px" alt="" />
+          <p><strong><a href="#"><%= mess[7].title%></a></strong> <%= mess[7].describe%></p>
         </li>
       </ul>
     </div>
@@ -138,29 +137,29 @@ Licence URI: https://www.os-templates.com/template-terms
   </div>
   <div id="hpage_cats">
     <div class="fl_left">
-      <h2><a href="#">Environment &raquo;</a></h2>
-      <img src="<%= static_path + "/images/demo/100x100.gif" %>" alt="" />
-      <p><strong><a href="#">Indonectetus facilis leo.</a></strong></p>
-      <p>This is a W3C standards compliant free website template from <a href="https://www.os-templates.com/">OS Templates</a>. For more CSS templates visit <a href="https://www.os-templates.com/">Free Website Templates</a>. Condimentumfelis et amet tellent quisquet a leo lacus nec augue accumsan sagittislaorem dolor sum at urna.</p>
+      <h2><a href="#"><%= mess[1].type%> &raquo;</a></h2>
+      <img src="<%= mess[1].image%>" style="width: 100px; height: 100px" alt="" />
+      <p><strong><a href="#"><%= mess[1].title%></a></strong></p>
+      <p><%= mess[1].describe%></p>
     </div>
     <div class="fl_right">
-      <h2><a href="#">Technology &raquo;</a></h2>
-      <img src="<%= static_path + "/images/demo/100x100.gif" %>" alt="" />
-      <p><strong><a href="#">Indonectetus facilis leo.</a></strong></p>
-      <p>This template is distributed using a <a href="https://www.os-templates.com/template-terms">Website Template Licence</a>, which allows you to use and modify the template for both personal and commercial use when you keep the provided credit links in the footer.</p>
+      <h2><a href="#"><%= mess[2].type%> &raquo;</a></h2>
+      <img src="<%= mess[2].image%>" style="width: 100px; height: 100px" alt="" />
+      <p><strong><a href="#"><%= mess[2].title%></a></strong></p>
+      <p><%= mess[2].describe%></p>
     </div>
     <br class="clear" />
     <div class="fl_left">
-      <h2><a href="#">Entertainment &raquo;</a></h2>
-      <img src="<%= static_path + "/images/demo/100x100.gif" %>" alt="" />
-      <p><strong><a href="#">Indonectetus facilis leo.</a></strong></p>
-      <p>Morbitincidunt maurisque eros molest nunc anteget sed vel lacus mus semper. Anterdumnullam interdum eros dui urna consequam ac nisl nullam ligula vestassa. Condimentumfelis et amet tellent quisquet a leo lacus nec augue accumsan sagittislaorem dolor sum at urna.</p>
+      <h2><a href="#"><%= mess[3].type%> &raquo;</a></h2>
+      <img src="<%= mess[3].image%>" style="width: 100px; height: 100px" alt="" />
+      <p><strong><a href="#"><%= mess[3].title%></a></strong></p>
+      <p><%= mess[3].describe%></p>
     </div>
     <div class="fl_right">
-      <h2><a href="#">Politics &raquo;</a></h2>
-      <img src="<%= static_path + "/images/demo/100x100.gif" %>" alt="" />
-      <p><strong><a href="#">Indonectetus facilis leo.</a></strong></p>
-      <p>Morbitincidunt maurisque eros molest nunc anteget sed vel lacus mus semper. Anterdumnullam interdum eros dui urna consequam ac nisl nullam ligula vestassa. Condimentumfelis et amet tellent quisquet a leo lacus nec augue accumsan sagittislaorem dolor sum at urna.</p>
+      <h2><a href="#"><%= mess[4].type%> &raquo;</a></h2>
+      <img src="<%= mess[4].image%>" style="width: 100px; height: 100px" alt="" />
+      <p><strong><a href="#"><%= mess[4].title%></a></strong></p>
+      <p><%= mess[4].describe%></p>
     </div>
     <br class="clear" />
   </div>
@@ -172,19 +171,19 @@ Licence URI: https://www.os-templates.com/template-terms
       <div id="hpage_latest">
         <h2>Feugiatrutrum rhoncus semper</h2>
         <ul>
-          <li><img src="<%= static_path + "/images/demo/190x130.gif" %>" alt="" />
-            <p>Nullamlacus dui ipsum conseqlo borttis non euisque morbipen a sdapibulum orna.</p>
-            <p>Urnau ltrices quis curabitur pha sellent esque congue magnisve stib ulum quismodo nulla et.</p>
+          <li><img src="<%= mess[5].image%>" style="width: 190px; height: 130px" alt="" />
+            <p><strong><%= mess[5].title%></strong></p>
+            <p><%= mess[5].describe%></p>
             <p class="readmore"><a href="#">Continue Reading &raquo;</a></p>
           </li>
-          <li><img src="<%= static_path + "/images/demo/190x130.gif" %>" alt="" />
-            <p>Nullamlacus dui ipsum conseqlo borttis non euisque morbipen a sdapibulum orna.</p>
-            <p>Urnau ltrices quis curabitur pha sellent esque congue magnisve stib ulum quismodo nulla et.</p>
+          <li><img src="<%= mess[6].image%>" style="width: 190px; height: 130px" alt="" />
+            <p><strong><%= mess[6].title%></strong></p>
+            <p><%= mess[6].describe%></p>
             <p class="readmore"><a href="#">Continue Reading &raquo;</a></p>
           </li>
-          <li class="last"><img src="<%= static_path + "/images/demo/190x130.gif" %>" alt="" />
-            <p>Nullamlacus dui ipsum conseqlo borttis non euisque morbipen a sdapibulum orna.</p>
-            <p>Urnau ltrices quis curabitur pha sellent esque congue magnisve stib ulum quismodo nulla et.</p>
+          <li class="last"><img src="<%= mess[7].image%>" style="width: 190px; height: 130px" alt="" />
+            <p><strong><%= mess[7].title%></strong></p>
+            <p><%= mess[7].describe%></p>
             <p class="readmore"><a href="#">Continue Reading &raquo;</a></p>
           </li>
         </ul>
