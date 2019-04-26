@@ -59,6 +59,51 @@ connection.query("SELECT * FROM news",function(err,result,fields){
         })
     });
 
+    app.get('/trangchuadmin', function(req, res) {
+              res.render('TrangChuAdmin', {
+                static_path: 'static',
+                theme: process.env.THEME || 'flatly',
+                flask_debug: process.env.FLASK_DEBUG || 'false',
+            });
+    });
+
+    app.get('/danhsachtin', function(req, res) {
+        var mess = [];
+        connection.query("SELECT * FROM news", function (err, result, fields) {
+            if (err) throw err;
+            console.log(result);
+              res.render('danhsachtin', {
+                static_path: 'static',
+                theme: process.env.THEME || 'flatly',
+                flask_debug: process.env.FLASK_DEBUG || 'false',
+                mess : result,
+                type : type
+            });
+        })
+    });
+
+    app.get('/khachhang', function(req, res) {
+              res.render('khachhang', {
+                static_path: 'static',
+                theme: process.env.THEME || 'flatly',
+                flask_debug: process.env.FLASK_DEBUG || 'false',
+            });
+    });
+
+    app.get('/themtin', function(req, res) {
+      var mess = [];
+      connection.query("SELECT * FROM type", function (err, result, fields) {
+          if (err) throw err;
+          console.log(result);
+            res.render('add', {
+              static_path: 'static',
+              theme: process.env.THEME || 'flatly',
+              flask_debug: process.env.FLASK_DEBUG || 'false',
+              types : result,
+          });
+      })
+  });
+
     app.get('/types/:type', function(req, res) {
       var mess = [];
       connection.query("SELECT * FROM DataNews.news where type like (select type.name from DataNews.type where idtype ="+req.params.type+")", function (err, result, fields) {
@@ -89,7 +134,7 @@ connection.query("SELECT * FROM news",function(err,result,fields){
   });
 
   app.get('/admin/addnews', function(req, res) {
-    var mess = [];   
+    var mess = [];
     connection.query("SELECT * FROM type", function (err, result, fields) {
         if (err) throw err;
         console.log(result);
@@ -98,13 +143,13 @@ connection.query("SELECT * FROM news",function(err,result,fields){
             theme: process.env.THEME || 'flatly',
             flask_debug: process.env.FLASK_DEBUG || 'false',
             types : result,
-        });     
-    })     
+        });
+    })
 });
 
   app.post('/news',function(req,res){
     console.log("Hello");
-    
+
     var title = req.body.title;
     var type = req.body.type;
     var describe = req.body.describe;
