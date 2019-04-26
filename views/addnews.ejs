@@ -65,6 +65,7 @@
   <p class="page-describe">Cập nhật thông tin mới nhất</p>
 
   <div class="container">
+
     <form id="submitForm" role="form">
       <div class="form-group">
         <label for="type">Thể loại</label>
@@ -83,7 +84,7 @@
 
       <div class="form-group">
         <label for="describe">Miêu tả</label>
-        <textarea class="form-control" rows="3" id="describe"></textarea>
+        <textarea class="form-control" rows="3" id="describe" name="describe"></textarea>
       </div>
 
       <div class="form-group">
@@ -102,7 +103,6 @@
           });
         </script>
       </div>
-
       <div id="signupSuccess" class="alert alert-success" style="display:none">
         <p id="signupSuccessText">Thanks for signing up! You'll be among the first to know when we launch.</p>
       </div>
@@ -127,7 +127,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
   </script>
-
+<script src="/bootstrap/notify.min.js"></script>
   <script type="text/javascript">
     $(document).ready(function () {
 
@@ -135,16 +135,19 @@
         // alert($("#submitForm").serialize());
         $.post("/news", $("#submitForm").serialize(),
             function (data) {
-              $("#signupSuccess").show();
+              // $("#signupSuccess").show();
+              $.notify("Nhập thành công", "success");
             }
           )
-          .error(function (xhr) {
+          .fail(function (xhr) {
             switch (xhr.status) {
               case 409:
-                $("#signupDuplicate").show();
+                // $("#signupDuplicate").show();
+                $.notify("Fear not, you're already on the list! You'll be among the first to know when we launch.", "info");
                 break;
               default:
-                $("#signupError").show();
+                // $("#signupError").show();
+                $.notify("Well this is embarrassing. It looks like we're having trouble getting you on the list.", "danger");
             }
           })
       })

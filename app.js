@@ -156,9 +156,15 @@ connection.query("SELECT * FROM news",function(err,result,fields){
     var content = req.body.content;
     var image = req.body.image;
     console.log(type + " " +title+" "+describe+" "+content+" "+image);
-    var query = "INSERT INTO `news` (first_name, last_name, position, number, image, user_name) VALUES ('" +
-    first_name + "', '" + last_name + "', '" + position + "', '" + number + "', '" + image_name + "', '" + username + "')";
-    res.status(201).end();
+    var query = "INSERT INTO `news`(`title`,`describe`,`content`,`type`,`image`) VALUES ('" +
+    title + "', '" + describe + "', '" + content + "', '" + type + "', '" + image + "')";
+    connection.query(query,(err,result)=>{
+      if (err) {
+        console.log(err);
+        return res.status(500).send(err);
+      }
+      res.status(201).end();
+    })
   });
 
     var port = process.env.PORT || 3000;
