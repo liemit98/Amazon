@@ -103,7 +103,7 @@
 
                                                 <!-- Button to Open the Modal -->
                                                 <div data-toggle="modal" data-target="#myModal">
-                                                  <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i> Xóa</button>
+                                                  <button type="button" class="btn btn-danger"><a href="/delete/<%= mess[i].idnews%>" method="post"><i class="fa fa-trash"></i> Xóa </a></button>
                                                 </div>
 
                                               <!-- The Modal -->
@@ -119,12 +119,12 @@
 
                                                     <!-- Modal body -->
                                                     <div class="modal-body">
-                                                      Bạn có chắc chắn muốn xóa?
+                                                        Bạn đã xóa thành công!!!
                                                     </div>
 
                                                     <!-- Modal footer -->
                                                     <div class="modal-footer">
-                                                      <button type="button" class="btn btn-dropbox" data-dismiss="modal">Ok</button>
+                                                      <button id="delete" type="button" class="btn btn-dropbox" data-dismiss="modal">Ok</button>
                                                       <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                                                     </div>
 
@@ -135,6 +135,7 @@
                                           </td>
                                         </tr>
                                         <%}%>
+
 
 
                                       </tbody>

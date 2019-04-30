@@ -86,11 +86,12 @@
                                         </tr>
                                       </thead>
                                       <tbody>
+                                        <%for (var key in mess){%>
                                         <tr>
-                                          <td>xemay01</td>
-                                          <td>Exeter150</td>
-                                          <td>10</td>
-                                          <td>59 triệu</td>
+                                          <td><%= mess[key].iduser%></td>
+                                          <td><%= mess[key].mail%></td>
+                                          <td><%= mess[key].username%></td>
+                                          <td><%= mess[key].password%></td>
                                           <td>
                                               <div>
 
@@ -127,88 +128,7 @@
                                             </div>
                                           </td>
                                         </tr>
-                                        <tr>
-                                            <td>xemay01</td>
-                                            <td>Exeter150</td>
-                                            <td>10</td>
-                                            <td>59 triệu</td>
-                                            <td>
-                                              <div>
-
-                                                <!-- Button to Open the Modal -->
-                                                <div data-toggle="modal" data-target="#myModal">
-                                                  <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i> Xóa</button>
-                                                </div>
-
-                                                <!-- The Modal -->
-                                                <div class="modal fade" id="myModal">
-                                                  <div class="modal-dialog">
-                                                    <div class="modal-content">
-
-                                                      <!-- Modal Header -->
-                                                      <div class="modal-header">
-                                                        <h4 class="modal-title">Cảnh báo</h4>
-                                                        <button type="button" class="close" data-dismiss="modal">×</button>
-                                                      </div>
-
-                                                      <!-- Modal body -->
-                                                      <div class="modal-body">
-                                                        Bạn có chắc chắn muốn xóa?
-                                                      </div>
-
-                                                      <!-- Modal footer -->
-                                                      <div class="modal-footer">
-                                                        <button type="button" class="btn btn-dropbox" data-dismiss="modal">Ok</button>
-                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                                      </div>
-
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </td>
-                                          </tr>
-                                          <tr>
-                                            <td>xemay01</td>
-                                            <td>Exeter150</td>
-                                            <td>10</td>
-                                            <td>59 triệu</td>
-                                              <td>
-                                                <div>
-
-                                                  <!-- Button to Open the Modal -->
-                                                  <div data-toggle="modal" data-target="#myModal">
-                                                    <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i> Xóa</button>
-                                                  </div>
-
-                                                <!-- The Modal -->
-                                                <div class="modal fade" id="myModal">
-                                                  <div class="modal-dialog">
-                                                    <div class="modal-content">
-
-                                                      <!-- Modal Header -->
-                                                      <div class="modal-header">
-                                                        <h4 class="modal-title">Cảnh báo</h4>
-                                                        <button type="button" class="close" data-dismiss="modal">×</button>
-                                                      </div>
-
-                                                      <!-- Modal body -->
-                                                      <div class="modal-body">
-                                                        Bạn có chắc chắn muốn xóa?
-                                                      </div>
-
-                                                      <!-- Modal footer -->
-                                                      <div class="modal-footer">
-                                                        <button type="button" class="btn btn-dropbox" data-dismiss="modal">Ok</button>
-                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                                      </div>
-
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </td>
-                                          </tr>
+                                        <%}%>
                                       </tbody>
                                 </table>
                             </div>

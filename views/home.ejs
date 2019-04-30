@@ -24,6 +24,17 @@ Licence URI: https://www.os-templates.com/template-terms
 <div class="wrapper col0">
   <div id="topline">
     <p>Tel: 0123 456789 | Mail: liemhung@domain.com</p>
+    <%if(kt == 0){%>
+    <ul>
+      <li><a href="/login">Đăng nhập</a></li>
+      <li class="last"><a href="/login">Đăng ký</a></li>
+    </ul>
+    <%}else{%>
+      <ul>
+        <li><a href="#"><%= user%></a></li>
+        <li class="last"><a href="/login">Đăng xuất</a></li>
+      </ul>
+    <%}%>
     <br class="clear" />
   </div>
 </div>
