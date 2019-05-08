@@ -40,7 +40,7 @@
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>
-          Cửa hàng xe máy
+          Trang tin tức online
           <small>Quản trị viên</small>
         </h1>
         <ol class="breadcrumb">
@@ -81,7 +81,7 @@
                                           <th>IdNews</th>
                                           <th>Title</th>
                                           <th>Describe</th>
-                                          <th>Xem </th>
+                                          <th>Sửa tin</th>
                                           <th>Xóa tin</th>
                                         </tr>
                                       </thead>
@@ -93,8 +93,8 @@
                                           <td><%=mess[i].describe%></td>
                                           <td>
                                               <span>
-                                                  <a href="XemSanPham.html">
-                                                    <button type="button" class="btn btn-info"><i class="fa fa-eye"></i> Xem</button>
+                                                  <a href="/admin/danhsachtin/suatin/<%= mess[i].idnews%>">
+                                                    <button type="button" class="btn btn-info"><i class="fa fa-eye"></i> Sửa</button>
                                                   </a>
                                               </span>
                                             </td>
@@ -103,7 +103,7 @@
 
                                                 <!-- Button to Open the Modal -->
                                                 <div data-toggle="modal" data-target="#myModal">
-                                                  <button type="button" class="btn btn-danger"><a href="/delete/<%= mess[i].idnews%>" method="post"><i class="fa fa-trash"></i> Xóa </a></button>
+                                                  <button type="button" class="btn btn-danger"><a href="/admin/delete/<%= mess[i].idnews%>" method="post"><i class="fa fa-trash"></i> Xóa </a></button>
                                                 </div>
 
                                               <!-- The Modal -->

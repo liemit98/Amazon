@@ -91,6 +91,7 @@ connection.query("SELECT * FROM news",function(err,result,fields){
     		// response.end();
     	}
 });
+// trang chủ........
     app.get('/', function(req, res) {
         var mess = [];
         var kt = 0;
@@ -120,16 +121,22 @@ connection.query("SELECT * FROM news",function(err,result,fields){
           }
         })
     });
-
+// trang chủ admin.........
     app.get('/trangchuadmin', function(req, res) {
+        if(req.session.role == 1){
+              req.session.access = true; // đây là biến kiểm tra bạn đã đăng nhập vào admin chưa..........
               res.render('TrangChuAdmin', {
                 static_path: 'static',
                 theme: process.env.THEME || 'flatly',
                 flask_debug: process.env.FLASK_DEBUG || 'false',
             });
+          }else {
+            res.redirect("/");
+          }
     });
 
     app.get('/login', function(req, res) {
+              req.session.destroy();
               res.render('login', {
                 static_path: 'static',
                 theme: process.env.THEME || 'flatly',
@@ -137,22 +144,26 @@ connection.query("SELECT * FROM news",function(err,result,fields){
             });
     });
 
-    app.get('/danhsachtin', function(req, res) {
-        var mess = [];
-        connection.query("SELECT * FROM news", function (err, result, fields) {
-            if (err) throw err;
-            console.log(result);
-              res.render('danhsachtin', {
-                static_path: 'static',
-                theme: process.env.THEME || 'flatly',
-                flask_debug: process.env.FLASK_DEBUG || 'false',
-                mess : result,
-                type : type
-            });
-        })
+    app.get('/admin/danhsachtin', function(req, res) {
+      if(req.session.access == true){
+          connection.query("SELECT * FROM news", function (err, result, fields) {
+              if (err) throw err;
+              console.log(result);
+                res.render('danhsachtin', {
+                  static_path: 'static',
+                  theme: process.env.THEME || 'flatly',
+                  flask_debug: process.env.FLASK_DEBUG || 'false',
+                  mess : result,
+                  type : type
+              });
+          })
+      }else {
+        res.redirect("/");
+      }
     });
 
     app.get('/admin/khachhang', function(req, res) {
+      if(req.session.access == true){
       connection.query("SELECT * FROM user where role=0", function (err, result, fields) {
           if (err) throw err;
             res.render('khachhang', {
@@ -162,24 +173,32 @@ connection.query("SELECT * FROM news",function(err,result,fields){
               mess : result,
           });
       })
+    }else {
+      res.redirect("/");
+    }
     });
 
-    app.get('/themtin', function(req, res) {
-      var mess = [];
-      connection.query("SELECT * FROM type", function (err, result, fields) {
-          if (err) throw err;
-          console.log(result);
-            res.render('add', {
-              static_path: 'static',
-              theme: process.env.THEME || 'flatly',
-              flask_debug: process.env.FLASK_DEBUG || 'false',
-              types : result,
-          });
-      })
+    app.get('/admin/themtin', function(req, res) {
+      if(req.session.access == true){
+        if(req.session.sua == true){
+
+        }else {
+          connection.query("SELECT * FROM type", function (err, result, fields) {
+              if (err) throw err;
+                res.render('add', {
+                  static_path: 'static',
+                  theme: process.env.THEME || 'flatly',
+                  flask_debug: process.env.FLASK_DEBUG || 'false',
+                  types : result,
+              });
+          })
+        }
+    }else {
+      res.redirect("/");
+    }
   });
 
     app.get('/types/:type', function(req, res) {
-      var mess = [];
       connection.query("SELECT * FROM DataNews.news where type like (select type.name from DataNews.type where idtype ="+req.params.type+")", function (err, result, fields) {
           if (err) throw err;
             res.render('newstype', {
@@ -193,7 +212,6 @@ connection.query("SELECT * FROM news",function(err,result,fields){
   });
 
     app.get('/news/:id', function(req, res) {
-      var mess = [];
       connection.query("SELECT * FROM news where idnews="+ req.params.id, function (err, result, fields) {
           if (err) throw err;
             res.render('Content', {
@@ -211,7 +229,6 @@ connection.query("SELECT * FROM news",function(err,result,fields){
     var mess = [];
     connection.query("SELECT * FROM type", function (err, result, fields) {
         if (err) throw err;
-        console.log(result);
           res.render('addnews', {
             static_path: 'static',
             theme: process.env.THEME || 'flatly',
@@ -220,18 +237,60 @@ connection.query("SELECT * FROM news",function(err,result,fields){
         });
     })
 });
+  // xóa tin trong admin...
+  app.get('/admin/delete/:id', function(req, res) {
+    if(req.session.access == true){
+    connection.query("DELETE FROM news WHERE idnews="+req.params.id, function (err, result, fields) {
+        if (err) throw err;
+          res.redirect("/admin/danhsachtin");
+    })
+  }else {
+    res.redirect("/");
+  }
+});
+// Sửa tin trong admin........
+app.get('/admin/danhsachtin/suatin/:id', function(req, res) {
+  if(req.session.access == true){
+  connection.query("SELECT * FROM news where idnews="+ req.params.id, function (err, result, fields) {
+      if (err) throw err;
+      res.render('update', {
+        static_path: 'static',
+        theme: process.env.THEME || 'flatly',
+        flask_debug: process.env.FLASK_DEBUG || 'false',
+        mess : result,
+        type : type,
+    });
+  })
+}else {
+  res.redirect("/");
+}
+});
 
   app.post('/news',function(req,res){
-    console.log("Hello");
-
     var title = req.body.title;
     var type = req.body.type;
     var describe = req.body.describe;
     var content = req.body.content;
     var image = req.body.image;
-    console.log(type + " " +title+" "+describe+" "+content+" "+image);
     var query = "INSERT INTO `news`(`title`,`describe`,`content`,`type`,`image`) VALUES ('" +
     title + "', '" + describe + "', '" + content + "', '" + type + "', '" + image + "')";
+    connection.query(query,(err,result)=>{
+      if (err) {
+        console.log(err);
+        return res.status(500).send(err);
+      }
+      res.status(201).end();
+    })
+  });
+
+  app.post('/news/update/:id',function(req,res){
+    var title = req.body.title;
+    var type = req.body.type;
+    var describe = req.body.describe;
+    var content = req.body.content;
+    var image = req.body.image;
+    var query = "UPDATE `datanews`.`news` SET `title` = ' "+title+"', `describe` = '"+describe+"', `content` = '"+content+"', `type` = '"+type+"', `image` = '"+image+"' WHERE (`idnews` = '"+req.params.id+"');"
+
     connection.query(query,(err,result)=>{
       if (err) {
         console.log(err);
