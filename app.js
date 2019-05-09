@@ -10,9 +10,9 @@
 
 
 var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : '123456',
+  host     : 'den1.mysql2.gear.host',
+  user     : 'datanews',
+  password : 'Lx4kd!?6ZYa6',
   port     : 3306,
   database : 'DataNews'
 });
