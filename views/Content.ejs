@@ -22,8 +22,19 @@ Licence URI: https://www.os-templates.com/template-terms
 </head>
 <body id="top">
 <div class="wrapper col0">
-  <div id="topline">
+    <div id="topline">
     <p>Tel: 0123 456789 | Mail: liemhung@domain.com</p>
+    <%if(kt == 0){%>
+    <ul>
+      <li><a href="/login">Đăng nhập</a></li>
+      <li class="last"><a href="/login">Đăng ký</a></li>
+    </ul>
+    <%}else{%>
+      <ul>
+        <li><a href="#"><%= user%></a></li>
+        <li class="last"><a href="/exit">Đăng xuất</a></li>
+      </ul>
+    <%}%>
     <br class="clear" />
   </div>
 </div>
@@ -82,36 +93,37 @@ Licence URI: https://www.os-templates.com/template-terms
       <div id="comments">
         <h2>Comments</h2>
         <ul class="commentlist">
-
+        <%if (listComment.length != 0){%>
+        <%for(var i=0;i < listComment.length;i++){%>
+        <%if(i % 2 == 0){%>
           <li class="comment_odd">
-            <div class="author"><img class="avatar" src="https://cdna.artstation.com/p/assets/images/images/003/731/234/original/pontus-ornemark-sunglasses-man-walking-animation.gif?1476900023" width="32" height="32" alt="" /><span class="name"><a href="#">A Name</a></span> <span class="wrote">wrote:</span></div>
-            <div class="submitdate"><a href="#">August 4, 2019 at 8:35 am</a></div>
-            <p>This is an example of a comment made on a post. You can either edit the comment, delete the comment or reply to the comment. Use this as a place to respond to the post or to share what you are thinking.</p>
+            <div class="author"><img class="avatar" src="https://cdna.artstation.com/p/assets/images/images/003/731/234/original/pontus-ornemark-sunglasses-man-walking-animation.gif?1476900023" width="32" height="32" alt="" /><span class="name"><a href="#"><%= listComment[i].username%></a></span> <span class="wrote">wrote:</span></div>
+            <div class="submitdate"><a href="#"><%= listComment[i].date%></a></div>
+            <p><%= listComment[i].content%></p>
           </li>
-
-          <li class="comment_even">
-            <div class="author"><img class="avatar" src="https://cdna.artstation.com/p/assets/images/images/003/235/548/original/jamie-fox-girlpoint-animatedmassive.gif?1471445378" width="32" height="32" alt="" /><span class="name"><a href="#">A Name</a></span> <span class="wrote">wrote:</span></div>
-            <div class="submitdate"><a href="#">August 4, 2019 at 8:35 am</a></div>
-            <p>This is an example of a comment made on a post. You can either edit the comment, delete the comment or reply to the comment. Use this as a place to respond to the post or to share what you are thinking.</p>
+          <%}else{%>
+            <li class="comment_even">
+            <div class="author"><img class="avatar" src="https://cdna.artstation.com/p/assets/images/images/003/235/548/original/jamie-fox-girlpoint-animatedmassive.gif?1471445378" width="32" height="32" alt="" /><span class="name"><a href="#"><%= listComment[i].username%></a></span> <span class="wrote">wrote:</span></div>
+            <div class="submitdate"><a href="#"><%= listComment[i].date%></a></div>
+            <p><%= listComment[i].content%></p>
           </li>
-          <li class="comment_odd">
-            <div class="author"><img class="avatar" src="https://cdna.artstation.com/p/assets/images/images/003/731/376/original/pontus-ornemark-alien-attack-can-man-2.gif?1476901032" width="32" height="32" alt="" /><span class="name"><a href="#">A Name</a></span> <span class="wrote">wrote:</span></div>
-            <div class="submitdate"><a href="#">August 4, 2019 at 8:35 am</a></div>
-            <p>This is an example of a comment made on a post. You can either edit the comment, delete the comment or reply to the comment. Use this as a place to respond to the post or to share what you are thinking.</p>
-          </li>
+        <%}%>
+        <%}%>
+        <%}%>
         </ul>
       </div>
       <h2>Write A Comment</h2>
       <div id="respond">
-        <form action="#" method="post">
+        <form action="addComment" method="post">
+          
+          <%if(kt == 1){%>
           <p>
-            <input type="text" name="name" id="name" value="" size="22" />
-            <label for="name"><small>Name (required)</small></label>
+          <label for="name" name="name"><small>Name : <%= user%></small></label>         
+          <input type="hidden" name="name" value="<%= iduser%>">
           </p>
-          <p>
-            <input type="text" name="email" id="email" value="" size="22" />
-            <label for="email"><small>Mail (required)</small></label>
-          </p>
+          <input type="hidden" name="idnews" value="<%= mess[0].idnews%>">
+          <%}%>
+          
           <p>
             <textarea name="comment" id="comment" cols="100%" rows="10"></textarea>
             <label for="comment" style="display:none;"><small>Comment (required)</small></label>

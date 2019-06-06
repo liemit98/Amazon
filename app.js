@@ -9,6 +9,14 @@
     AWS.config.region = process.env.REGION
 
 
+// var connection = mysql.createConnection({
+//   host     : 'den1.mysql2.gear.host',
+//   user     : 'datanews',
+//   password : 'Lx4kd!?6ZYa6',
+//   port     : 3306,
+//   database : 'DataNews'
+// });
+
 var connection = mysql.createConnection({
   host     : 'den1.mysql2.gear.host',
   user     : 'datanews',
@@ -36,6 +44,11 @@ connection.query("SELECT * FROM news",function(err,result,fields){
   list=result;
 })
 
+var listComment = [];
+connection.query("SELECT * FROM comment",function(err,result,fields){
+  if(err) throw err;
+  listComment=result;
+})
     var app = express();
 
     app.set('view engine', 'ejs');
@@ -53,7 +66,8 @@ connection.query("SELECT * FROM news",function(err,result,fields){
     		connection.query('SELECT * FROM user WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
     			if (results.length > 0) {
     				request.session.loggedin = true;
-    				request.session.username = username;
+            request.session.username = username;
+            request.session.iduser = results[0].iduser;
             request.session.role = results[0].role;
             if(results[0].role == 0){
               response.redirect('/');
@@ -70,6 +84,11 @@ connection.query("SELECT * FROM news",function(err,result,fields){
     		// response.end();
     	}
 });
+  // đăng xuất
+    app.get('/exit',function(req,res){
+        req.session.loggedin = false;
+        res.redirect('/');
+    });
     //thêm tài khoản...
     app.post('/adduser', function(request, response) {
     	var username = request.body.username;
@@ -121,6 +140,100 @@ connection.query("SELECT * FROM news",function(err,result,fields){
           }
         })
     });
+// loại tin 
+    app.get('/types/:type', function(req, res) {
+      var kt =0 ;
+      connection.query("SELECT * FROM DataNews.news where type like (select type.name from DataNews.type where idtype ="+req.params.type+")", function (err, result, fields) {
+          if (err) throw err;
+          if(req.session.loggedin){
+            kt=1;
+            res.render('newstype', {
+              static_path: 'static',
+              theme: process.env.THEME || 'flatly',
+              flask_debug: process.env.FLASK_DEBUG || 'false',
+              mess : result,
+              type : type,
+              user : req.session.username,
+              kt   : kt
+          });
+        }else {
+            res.render('newstype', {
+              static_path: 'static',
+              theme: process.env.THEME || 'flatly',
+              flask_debug: process.env.FLASK_DEBUG || 'false',
+              mess : result,
+              type : type,
+              kt   : kt
+          });
+        }
+      })
+  });
+
+// nội dung bài viết
+  app.get('/news/:id', function(req, res) {
+    //load comment
+    var listComment = [];
+    connection.query("SELECT * FROM datanews.comment INNER JOIN datanews.user on comment.iduser = user.iduser where idnews = "+req.params.id,function(err,result,fields){
+    if(err) throw err;
+    listComment=result;
+    })
+    
+    var kt = 0;
+    connection.query("SELECT * FROM news where idnews="+ req.params.id, function (err, result, fields) {
+        if (err) throw err;
+        if(req.session.loggedin){
+          kt=1;
+          res.render('Content', {
+            static_path: 'static',
+            theme: process.env.THEME || 'flatly',
+            flask_debug: process.env.FLASK_DEBUG || 'false',
+            mess : result,
+            type : type,
+            list : list,
+            listComment : listComment,
+            user : req.session.username,
+            iduser : req.session.iduser,
+            kt   : kt
+        });
+      }else {
+          res.render('Content', {
+            static_path: 'static',
+            theme: process.env.THEME || 'flatly',
+            flask_debug: process.env.FLASK_DEBUG || 'false',
+            mess : result,
+            type : type,
+            listComment : listComment,
+            list : list,
+            kt   : kt
+        });
+      }
+    })
+});
+// addComment
+    app.post('/news/addComment',function(req,res){
+        var name = req.body.name;
+        var comment = req.body.comment;
+        var dateCurent = new Date();
+        var dateTime = ""+dateCurent.getDate() +"/"+ (dateCurent.getMonth()+1)+"/"+dateCurent.getFullYear()+ " " +dateCurent.getHours() +":"+ dateCurent.getMinutes(); 
+        var idnews = req.body.idnews; 
+      
+        if (req.session.loggedin && comment) {
+          var string = "INSERT INTO `datanews`.`comment` (`iduser`, `idnews`, `date`, `content`) VALUES ('"+ name +"', '"+ idnews+"', '"+ dateTime +"', '"+comment+"')";         
+          connection.query(string, function(err, results) {
+            if (err) {
+              console.log(err);
+              return req.status(500).send(err);
+            }
+            res.redirect('/news/'+idnews);
+          });
+        } else {
+          res.send('phải đăng nhập hoặc không được bỏ trống commnet!!!');
+          // response.end();
+        }
+        
+        
+    });
+
 // trang chủ admin.........
     app.get('/trangchuadmin', function(req, res) {
         if(req.session.role == 1){
@@ -198,32 +311,9 @@ connection.query("SELECT * FROM news",function(err,result,fields){
     }
   });
 
-    app.get('/types/:type', function(req, res) {
-      connection.query("SELECT * FROM DataNews.news where type like (select type.name from DataNews.type where idtype ="+req.params.type+")", function (err, result, fields) {
-          if (err) throw err;
-            res.render('newstype', {
-              static_path: 'static',
-              theme: process.env.THEME || 'flatly',
-              flask_debug: process.env.FLASK_DEBUG || 'false',
-              mess : result,
-              type : type
-          });
-      })
-  });
 
-    app.get('/news/:id', function(req, res) {
-      connection.query("SELECT * FROM news where idnews="+ req.params.id, function (err, result, fields) {
-          if (err) throw err;
-            res.render('Content', {
-              static_path: 'static',
-              theme: process.env.THEME || 'flatly',
-              flask_debug: process.env.FLASK_DEBUG || 'false',
-              mess : result,
-              type : type,
-              list : list
-          });
-      })
-  });
+
+    
 
   app.get('/admin/addnews', function(req, res) {
     var mess = [];
