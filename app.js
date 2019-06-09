@@ -69,6 +69,9 @@ connection.query("SELECT * FROM comment",function(err,result,fields){
             request.session.username = username;
             request.session.iduser = results[0].iduser;
             request.session.role = results[0].role;
+            request.session.infor = results;
+            //console.log(request.session.infor[0].mail);
+            
             if(results[0].role == 0){
               response.redirect('/');
             }else {
@@ -247,7 +250,7 @@ connection.query("SELECT * FROM comment",function(err,result,fields){
             res.redirect("/");
           }
     });
-
+    // phần đăng nhập
     app.get('/login', function(req, res) {
               req.session.destroy();
               res.render('login', {
@@ -256,6 +259,48 @@ connection.query("SELECT * FROM comment",function(err,result,fields){
                 flask_debug: process.env.FLASK_DEBUG || 'false',
             });
     });
+    // thông tin cá nhân khách hàng
+    app.get('/infor', function(req, res) {
+      var checkInfo = true;
+      res.render('inforGuest', {
+        static_path: 'static',
+        theme: process.env.THEME || 'flatly',
+        flask_debug: process.env.FLASK_DEBUG || 'false',
+        mess : req.session.infor,
+        checkInfo : checkInfo
+    });
+});
+// quên mật khẩu
+    app.get('/forgot', function(req, res) {
+      var checkInfo = false;
+      res.render('inforGuest', {
+        static_path: 'static',
+        theme: process.env.THEME || 'flatly',
+        flask_debug: process.env.FLASK_DEBUG || 'false',
+        checkInfo : checkInfo
+    });
+});
+// đổi mật khẩu và quên mật khẩu
+    app.post('/chancepass', function(req, res) {
+      var pass =  req.body.password1;
+      connection.query("SELECT user.iduser FROM datanews.user where user.mail = '"+req.body.mail+"' and user.username = '"+req.body.username+"'", function (err, result, fields) {
+        if (err) {
+          console.log(err);
+          res.send('Email hoặc username không đúng!');
+        }
+        connection.query("UPDATE `datanews`.`user` SET `password` = '"+pass+"' WHERE (`iduser` = '"+result[0].iduser+"');", function (err, result, fields) {
+          if (err) {
+            console.log(err);
+            return req.status(500).send(err);
+          }
+          res.redirect('/login');
+        });
+        
+      })
+
+});   
+      
+  
 
     app.get('/admin/danhsachtin', function(req, res) {
       if(req.session.access == true){
@@ -311,8 +356,42 @@ connection.query("SELECT * FROM comment",function(err,result,fields){
     }
   });
 
-
-
+// admin/comment
+app.get('/admin/comment', function(req, res) {
+  if(req.session.access == true){
+      connection.query("SELECT * FROM comment", function (err, result, fields) {
+          if (err) throw err;
+          console.log(result);
+            res.render('comment', {
+              static_path: 'static',
+              theme: process.env.THEME || 'flatly',
+              flask_debug: process.env.FLASK_DEBUG || 'false',
+              mess : result,
+              type : type
+          });
+      })
+  }else {
+    res.redirect("/");
+  }
+});
+// comment theo bài.
+    app.get('/admin/comment/:id', function(req, res) {
+      if(req.session.access == true){
+          connection.query("SELECT * FROM comment where idnews="+req.params.id, function (err, result, fields) {
+              if (err) throw err;
+              console.log(result);
+                res.render('comment', {
+                  static_path: 'static',
+                  theme: process.env.THEME || 'flatly',
+                  flask_debug: process.env.FLASK_DEBUG || 'false',
+                  mess : result,
+                  type : type
+              });
+          })
+      }else {
+        res.redirect("/");
+      }
+    });
     
 
   app.get('/admin/addnews', function(req, res) {

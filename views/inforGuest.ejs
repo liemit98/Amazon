@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Login</title>
+    <title>Infor</title>
     <link rel="stylesheet" href="/dist/css/login.css">
 	<script> 
 function validateSignUp()                                    
@@ -75,37 +75,71 @@ function validateSignUp()
   <body>
     <div class="login-wrap">
 	<div class="login-html">
-		<input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
-		<input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Sign Up</label>
+        <%if(checkInfo == false){%>
+        <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Forgot Password</label>
+		<input id="tab-2"  type="radio hidden" name="tab" class="sign-up"><label for="tab-2" class="tab"></label>
 		<div class="login-form">
-      <form name="RegForm" action="auth" onsubmit="return validateSignUp()" method="POST">
+      <form name="RegForm" action="chancepass" method="POST" onsubmit="return validateSignUp()">
 			<div class="sign-in-htm">
 				<div class="group">
 					<label for="user" class="label">Username</label>
-					<input id="user" type="text" name="username" class="input" required>
+					<input id="user" type="text" name="username"  class="input" required>
 				</div>
 				<div class="group">
-					<label for="pass" class="label">Password</label>
-					<input id="pass" type="password" name="password" class="input" data-type="password" required>
+					<label for="mail" class="label">Mail</label>
+					<input id="mail" type="text" name="mail"  class="input" required>
+				</div>	
+                <div class="group">
+					<label for="pass" class="label">New Password</label>
+					<input id="pass" name="password" type="password" class="input" data-type="password" required>
 				</div>
 				<div class="group">
-					<input id="check" type="checkbox" class="check" checked>
-					<label for="check"><span class="icon"></span> Keep me Signed in</label>
-				</div>
+					<label for="pass" class="label">Repeat Password</label>
+					<input id="pass" name="password1" type="password" class="input" data-type="password" required>
+				</div>		
 				<div class="group">
-					<input type="submit" class="button" value="Sign In">
-				</div>
-				<div class="hr"></div>
-				<div class="foot-lnk">
-					<a href="forgot">Forgot Password?</a>
-				</div>
+					<input type="submit" class="button" value="Save">
+				</div>             
 			</div>
       </form>
-			<div class="sign-up-htm">
-        <form name="RegForm" action="adduser" onsubmit="return validateSignUp()" method="POST">
+		
+      <%}else{%>
+        <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Chance Password</label>
+		<input id="tab-2"  type="radio hidden" name="tab" class="sign-up"><label for="tab-2" class="tab"></label>
+		<div class="login-form">
+      <form name="RegForm" action="chancepass" method="POST" onsubmit="return validateSignUp()">
+			<div class="sign-in-htm">
 				<div class="group">
 					<label for="user" class="label">Username</label>
-					<input id="user"  name="username" type="text" class="input" required>
+					<input id="user" type="text" name="username" value="<%= mess[0].username%>" class="input" readonly>
+				</div>
+				<div class="group">
+					<label for="mail" class="label">Mail</label>
+					<input id="mail" type="text" name="mail" value="<%= mess[0].mail%>" class="input" readonly>
+				</div>	
+                <div class="group">
+					<label for="pass" class="label">Old Password</label>
+					<input id="pass" name="password2" type="password" class="input" data-type="password" required>
+				</div>
+                <div class="group">
+					<label for="pass" class="label">New Password</label>
+					<input id="pass" name="password" type="password" class="input" data-type="password" required>
+				</div>
+				<div class="group">
+					<label for="pass" class="label">Repeat Password</label>
+					<input id="pass" name="password1" type="password" class="input" data-type="password" required>
+				</div>		
+				<div class="group">
+					<input type="submit" class="button" value="Save">
+				</div>             
+			</div>
+      </form>
+      <%}%>
+			<div class="sign-up-htm">
+        <form action="#" method="POST">
+				<div class="group">
+					<label for="user" class="label">Username</label>
+					<input id="user"  name="username" type="text" class="input">
 				</div>
 				<div class="group">
 					<label for="pass" class="label">Password</label>
@@ -117,7 +151,7 @@ function validateSignUp()
 				</div>
 				<div class="group">
 					<label for="pass" class="label">Email Address</label>
-					<input id="pass" name="mail" type="text" class="input" required>
+					<input id="pass" name="mail" type="text" class="input">
 				</div>
 				<div class="group">
 					<input type="submit" class="button" value="Sign Up">

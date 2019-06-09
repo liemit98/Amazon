@@ -56,7 +56,7 @@
                     <div class="col-xs-12">
                         <div class="box">
                             <div class="box-header">
-                                <h3 class="box-title">Bảng danh sách tin</h3>
+                                <h3 class="box-title">Bảng danh sách bình luận</h3>
                             </div>
                             <div class="box-body">
                                 <div class="row">
@@ -66,83 +66,35 @@
                                             <input type="text" class="form-control" onkeyup="myFunctionSP()" id="myInput" placeholder="Tìm">
                                         </div>
                                     </div>
-                                    <div class="col-xs-2">
-                                        <div class="btn-them">
-                                            <a href="themtin">
-                                                <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i>
-                                                    Thêm</button>
-                                            </a>
-                                        </div>
-                                    </div>
                                 </div>
                                 <table class="table table-bordered table-hover" id="myTable">
                                     <thead>
                                         <tr>
+                                          <th>Id</th>
+                                          <th>IdUser</th>
                                           <th>IdNews</th>
-                                          <th>Title</th>
-                                          <th>Describe</th>
-                                          <th>Comment</th>
-                                          <th>Sửa tin</th>
+                                          <th>Date</th>
+                                          <th>Content</th>
                                           <th>Xóa tin</th>
                                         </tr>
                                       </thead>
                                       <tbody>
                                         <%for (var i = 0;i<mess.length;i++){%>
                                         <tr>
+                                          <td><%=mess[i].idcomment%></td>
+                                          <td><%=mess[i].iduser%></td>
                                           <td><%=mess[i].idnews%></td>
-                                          <td><%=mess[i].title%></td>
-                                          <td><%=mess[i].describe%></td>
-                                          <td>
-                                              <span>
-                                                  <a href="/admin/comment/<%= mess[i].idnews%>">
-                                                    <button type="button" class="btn btn-info"><i class="fa fa-book"></i> Xem</button>
-                                                  </a>
-                                              </span>
-                                            </td>
-                                          <td>
-                                              <span>
-                                                  <a href="/admin/danhsachtin/suatin/<%= mess[i].idnews%>">
-                                                    <button type="button" class="btn btn-warning"><i class="fa fa-eye"></i> Sửa</button>
-                                                  </a>
-                                              </span>
-                                            </td>
+                                          <td><%=mess[i].date%></td>   
+                                          <td><%=mess[i].content%></td>                             
                                             <td>
                                               <div>
-
                                                 <!-- Button to Open the Modal -->
                                                 <span>
-                                                <a href="/admin/delete/<%= mess[i].idnews%>">
+                                                <a href="/admin/comment/delete/<%= mess[i].idcomment%>">
                                                   <button type="button"  class="btn btn-danger"><i class="fa fa-trash"></i> Xóa </button>
                                                 </a>
                                                 </span>
-
-                                              <!-- The Modal -->
-                                              <div class="modal fade" id="myModal">
-                                                <div class="modal-dialog">
-                                                  <div class="modal-content">
-
-                                                    <!-- Modal Header -->
-                                                    <div class="modal-header">
-                                                      <h4 class="modal-title">Cảnh báo</h4>
-                                                      <button type="button" class="close" data-dismiss="modal">×</button>
-                                                    </div>
-
-                                                    <!-- Modal body -->
-                                                    <div class="modal-body">
-                                                        Bạn đã xóa thành công!!!
-                                                    </div>
-
-                                                    <!-- Modal footer -->
-                                                    <div class="modal-footer">
-                                                    
-                                                      <button  type="button"  class="btn btn-dropbox" >Ok</button>
-                                                    
-                                                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                                    </div>
-
-                                                  </div>
-                                                </div>
-                                              </div>
+                                          
                                             </div>
                                           </td>
                                         </tr>
