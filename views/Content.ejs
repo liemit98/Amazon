@@ -9,7 +9,7 @@ Licence URI: https://www.os-templates.com/template-terms
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>News Magazine</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="/layout/styles/layout.css" rel="stylesheet">
 
 <script type="text/javascript" src="/layout/scripts/jquery.min.js"></script>
@@ -109,11 +109,24 @@ function validateSignUp()
 <div class="wrapper">
   <div class="container">
     <div class="content">
-      <h1><%= mess[0].title%></h1>
+    
+      <h1><%= mess[0].title%> </h1>
       <p><strong><%= mess[0].describe%> </strong></p>
       <img class="imgr" src="<%= mess[0].image%>"  alt="" width="600" height="500" />
       <p><%= mess[0].content%></p>
-
+      <%if(kt == 1){%>
+      <p><form action="addSave"   method="post">
+          <input type="hidden" name="name" value="<%= iduser%>">
+          <input type="hidden" name="idnews" value="<%= mess[0].idnews%>">  
+        <%if(ktSave == 'false'){%>
+          <input type="hidden" name="ktSave" value="false">
+          <input type="submit" value="Lưu bài viết" style="float: right;  ">
+          <%}else{%>
+          <input type="hidden" name="ktSave" value="true">
+          <input type="submit" value="Đã lưu" style="color: white ;background: blue; float: right;  ">
+          <%}%>
+      </form></p>
+     <%}%>
       <div id="comments">
         <h2>Comments</h2>
         <ul class="commentlist">
@@ -158,6 +171,7 @@ function validateSignUp()
             <input name="reset" type="reset" id="reset" tabindex="5" value="Reset Form" />
           </p>
         </form>
+        
       </div>
     </div>
     <div class="column">

@@ -182,22 +182,38 @@ connection.query("SELECT * FROM comment",function(err,result,fields){
     })
     
     var kt = 0;
-    connection.query("SELECT * FROM news where idnews="+ req.params.id, function (err, result, fields) {
+    var Save = "false";
+    connection.query("SELECT * FROM news where idnews=?", req.params.id, function (err, result, fields) {
         if (err) throw err;
+        
         if(req.session.loggedin){
           kt=1;
-          res.render('Content', {
-            static_path: 'static',
-            theme: process.env.THEME || 'flatly',
-            flask_debug: process.env.FLASK_DEBUG || 'false',
-            mess : result,
-            type : type,
-            list : list,
-            listComment : listComment,
-            user : req.session.username,
-            iduser : req.session.iduser,
-            kt   : kt
-        });
+          
+          connection.query("SELECT * FROM datanews.user_save_news where idnews = "+req.params.id+" and iduser ="+req.session.iduser, function (err, result1, fields) {
+            if (err) throw err;
+            console.log("news/:id - Save 1 : "+Save);
+            
+            if(result1.length >0){
+              Save = "true";      
+              console.log("news/:id - Save 2 : "+Save);        
+            }
+            console.log("news/:id - Save 3 : "+Save);
+            res.render('Content', {
+              static_path: 'static',
+              theme: process.env.THEME || 'flatly',
+              flask_debug: process.env.FLASK_DEBUG || 'false',
+              mess : result,
+              type : type,
+              list : list,
+              listComment : listComment,
+              user : req.session.username,
+              iduser : req.session.iduser,
+              kt   : kt,
+              ktSave : Save
+          });
+          })  
+                  
+          
       }else {
           res.render('Content', {
             static_path: 'static',
@@ -236,7 +252,54 @@ connection.query("SELECT * FROM comment",function(err,result,fields){
         
         
     });
+// Lưu bài viết
+app.post('/news/addSave',function(req,res){
+  var name = req.body.name;
+  var dateCurent = new Date();
+  var dateTime = ""+dateCurent.getDate() +"/"+ (dateCurent.getMonth()+1)+"/"+dateCurent.getFullYear()+ " " +dateCurent.getHours() +":"+ dateCurent.getMinutes(); 
+  var idnews = req.body.idnews; 
+  var ktSave = req.body.ktSave;
+  console.log("/news/addSave : ktSave : "+ktSave);
+  
+  if (req.session.loggedin) {
+    if(ktSave == "false"){
+      console.log("vô ");
+      
+    var string = "INSERT INTO `datanews`.`user_save_news` (`idnews`, `iduser`, `date`) VALUES ('"+idnews+"', '"+name+"', '"+dateTime+"')";         
+    connection.query(string, function(err, results) {
+      if (err) {
+        console.log(err);
+        return req.status(500).send(err);
+      }
 
+      res.redirect('/news/'+idnews);
+    })
+  }else{
+    console.log("vô sai");
+    
+    connection.query("SELECT * FROM datanews.user_save_news where idnews = "+idnews+" and iduser = "+name, function (err, result, fields) {
+      if (err) {
+        console.log(err);
+        res.send('Email hoặc username không đúng!');
+      }
+      var id = result[0].iduser_save_news;
+      connection.query("DELETE FROM `datanews`.`user_save_news` WHERE (`iduser_save_news` = '"+id+"')", function (err, result, fields) {
+        if (err) {
+          console.log(err);
+          return req.status(500).send(err);
+        }
+        res.redirect('/news/'+idnews);
+      });
+      
+    })
+  }
+  } else {
+    res.send('phải đăng nhập hoặc không được bỏ trống commnet!!!');
+    // response.end();
+  }
+  
+  
+});
 // trang chủ admin.........
     app.get('/trangchuadmin', function(req, res) {
         if(req.session.role == 1){
