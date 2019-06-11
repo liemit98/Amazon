@@ -146,7 +146,7 @@ connection.query("SELECT * FROM comment",function(err,result,fields){
 // loại tin 
     app.get('/types/:type', function(req, res) {
       var kt =0 ;
-      connection.query("SELECT * FROM DataNews.news where type like (select type.name from DataNews.type where idtype ="+req.params.type+")", function (err, result, fields) {
+      connection.query("SELECT * FROM DataNews.news where type like (select type.name from DataNews.type where idtype =?)",req.params.type, function (err, result, fields) {
           if (err) throw err;
           if(req.session.loggedin){
             kt=1;
@@ -176,7 +176,7 @@ connection.query("SELECT * FROM comment",function(err,result,fields){
   app.get('/news/:id', function(req, res) {
     //load comment
     var listComment = [];
-    connection.query("SELECT * FROM datanews.comment INNER JOIN datanews.user on comment.iduser = user.iduser where idnews = "+req.params.id,function(err,result,fields){
+    connection.query("SELECT * FROM datanews.comment INNER JOIN datanews.user on comment.iduser = user.iduser where idnews = ?",req.params.id,function(err,result,fields){
     if(err) throw err;
     listComment=result;
     })
@@ -377,7 +377,7 @@ app.get('/admin/comment', function(req, res) {
 // comment theo bài.
     app.get('/admin/comment/:id', function(req, res) {
       if(req.session.access == true){
-          connection.query("SELECT * FROM comment where idnews="+req.params.id, function (err, result, fields) {
+          connection.query("SELECT * FROM comment where idnews=?",req.params.id, function (err, result, fields) {
               if (err) throw err;
               console.log(result);
                 res.render('comment', {
@@ -440,7 +440,7 @@ app.get('/admin/comment', function(req, res) {
   // xóa tin trong admin...
   app.get('/admin/delete/:id', function(req, res) {
     if(req.session.access == true){
-    connection.query("DELETE FROM news WHERE idnews="+req.params.id, function (err, result, fields) {
+    connection.query("DELETE FROM news WHERE idnews=?",req.params.id, function (err, result, fields) {
         if (err) throw err;
           res.redirect("/admin/danhsachtin");
     })
@@ -489,9 +489,9 @@ app.get('/admin/danhsachtin/suatin/:id', function(req, res) {
     var describe = req.body.describe;
     var content = req.body.content;
     var image = req.body.image;
-    var query = "UPDATE `datanews`.`news` SET `title` = ' "+title+"', `describe` = '"+describe+"', `content` = '"+content+"', `type` = '"+type+"', `image` = '"+image+"' WHERE (`idnews` = '"+req.params.id+"');"
+    var query = "UPDATE `datanews`.`news` SET `title` = ' "+title+"', `describe` = '"+describe+"', `content` = '"+content+"', `type` = '"+type+"', `image` = '"+image+"' WHERE (`idnews` = ?);"
 
-    connection.query(query,(err,result)=>{
+    connection.query(query,req.params.id,(err,result)=>{
       if (err) {
         console.log(err);
         return res.status(500).send(err);

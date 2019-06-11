@@ -19,6 +19,29 @@ Licence URI: https://www.os-templates.com/template-terms
 <script type="text/javascript" src="/layout/scripts/galleryviewthemes/jquery.galleryview.2.1.1.min.js"></script>
 <script type="text/javascript" src="/layout/scripts/galleryviewthemes/jquery.galleryview.setup.js"></script>
 <!--  Homepage Specific -->
+<script> 
+function validateSignUp()                                    
+{ 
+    var comment = document.forms["RegForm"]["comment"];               
+    
+	
+   
+    if (comment.value == "" )                                  
+    { 
+        window.alert("Không được bỏ trống"); 
+        comment.focus(); 
+        return false; 
+    } 
+
+	if (comment.value.indexOf("'", 0) >= 0 )                                  
+    { 
+        window.alert("Nhập không đúng mặc định"); 
+        comment.focus(); 
+        return false; 
+    } 
+       
+    return true; 
+}</script> 
 </head>
 <body id="top">
 <div class="wrapper col0">
@@ -115,7 +138,7 @@ Licence URI: https://www.os-templates.com/template-terms
       </div>
       <h2>Write A Comment</h2>
       <div id="respond">
-        <form action="addComment" method="post">
+        <form action="addComment" name="RegForm" onsubmit="return validateSignUp()" method="post">
           
           <%if(kt == 1){%>
           <p>
@@ -126,7 +149,7 @@ Licence URI: https://www.os-templates.com/template-terms
           <%}%>
           
           <p>
-            <textarea name="comment" id="comment" cols="100%" rows="10"></textarea>
+            <textarea name="comment"  id="comment" cols="100%" rows="10"></textarea>
             <label for="comment" style="display:none;"><small>Comment (required)</small></label>
           </p>
           <p>
