@@ -57,7 +57,7 @@ connection.query("SELECT * FROM comment",function(err,result,fields){
     app.use(bodyParser.json())
     app.use(express.static(path.join(__dirname, 'static')));
     app.use(session({ secret: 'secret', resave: true, saveUninitialized: true }));
-
+    
     //kiểm tra đăng nhập
     app.post('/auth', function(request, response) {
     	var username = request.body.username;
@@ -392,7 +392,38 @@ app.get('/admin/comment', function(req, res) {
         res.redirect("/");
       }
     });
-    
+
+    // tìm kiem
+    app.post('/find', function(req, res) {
+      var kt =0;
+      connection.query("SELECT * FROM datanews.news where datanews.news.title like '%"+req.body.txtfind+"%'", function (err, result, fields) {
+        if (err) {
+          console.log(err);
+          res.send('Không có từ khóa này');
+        }
+        if(req.session.loggedin){
+          kt=1;
+          res.render('search', {
+            static_path: 'static',
+            theme: process.env.THEME || 'flatly',
+            flask_debug: process.env.FLASK_DEBUG || 'false',
+            mess : result,
+            type : type,
+            user : req.session.username,
+            kt   : kt
+        });
+      }else {
+          res.render('search', {
+            static_path: 'static',
+            theme: process.env.THEME || 'flatly',
+            flask_debug: process.env.FLASK_DEBUG || 'false',
+            mess : result,
+            type : type,
+            kt   : kt
+        });
+      }
+      })
+});   
 
   app.get('/admin/addnews', function(req, res) {
     var mess = [];
@@ -468,7 +499,11 @@ app.get('/admin/danhsachtin/suatin/:id', function(req, res) {
       res.status(201).end();
     })
   });
-
+  // cách chống những url sai
+  app.use((req, res, next) => {
+    //res.redirect('/');
+    res.send("Chúng tôi hiểu bạn đang có ý định làm gì!! Hãy sử dụng trang web một cách văn minh nhé ^^!");
+  });
     var port = process.env.PORT || 3000;
 
     var server = app.listen(port, function () {

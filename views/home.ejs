@@ -62,13 +62,13 @@
         </li>
       </ul>
     </div>
-    <div id="search">
-      <form action="#" method="post">
-        <fieldset>
+    <div id="liem">
+      <form action="/find" method="post">
+        
           <legend>Site Search</legend>
-          <input type="text" value="Search Our Website&hellip;"  onfocus="this.value=(this.value=='Search Our Website&hellip;')? '' : this.value ;" />
+          <input type="text" name="txtfind"   required/>
           <input type="submit" name="go" id="go" value="Tim kiem" />
-        </fieldset>
+      
       </form>
     </div>
     <br class="clear" />
@@ -246,7 +246,7 @@
             <input type="text" value="Enter email address&hellip;"  onfocus="this.value=(this.value=='Enter email address&hellip;')? '' : this.value ;" />
           </div>
           <div class="fl_right">
-            <input type="submit" name="newsletter_go" id="newsletter_go" value="&raquo;" />
+            <input type="button" name="newsletter_go" id="newsletter_go" value="&raquo;" />
           </div>
         </fieldset>
       </form>

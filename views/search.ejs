@@ -10,14 +10,14 @@ Licence URI: https://www.os-templates.com/template-terms
 <head>
 <title>News Magazine</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<link href="/layout/styles/layout.css" rel="stylesheet">
+<link href="/layout/styles/layout.css"  rel="stylesheet">
 
-<script type="text/javascript" src="/layout/scripts/jquery.min.js"></script>
+<script type="text/javascript" src="/layout/scripts/jquery.min.js" ></script>
 <!-- Homepage Specific -->
-<script type="text/javascript" src="/layout/scripts/galleryviewthemes/jquery.easing.1.3.js"></script>
-<script type="text/javascript" src="/layout/scripts/galleryviewthemes/jquery.timers.1.2.js"></script>
-<script type="text/javascript" src="/layout/scripts/galleryviewthemes/jquery.galleryview.2.1.1.min.js"></script>
-<script type="text/javascript" src="/layout/scripts/galleryviewthemes/jquery.galleryview.setup.js"></script>
+<script type="text/javascript" src="/layout/scripts/galleryviewthemes/jquery.easing.1.3.js" ></script>
+<script type="text/javascript" src="/layout/scripts/galleryviewthemes/jquery.timers.1.2.js" ></script>
+<script type="text/javascript" src="/layout/scripts/galleryviewthemes/jquery.galleryview.2.1.1.min.js" ></script>
+<script type="text/javascript" src="/layout/scripts/galleryviewthemes/jquery.galleryview.setup.js" ></script>
 <!--  Homepage Specific -->
 </head>
 <body id="top">
@@ -68,7 +68,7 @@ Licence URI: https://www.os-templates.com/template-terms
         </li>
       </ul>
     </div>
-    <div id="liem">
+   <div id="liem">
       <form action="/find" method="post">
         
           <legend>Site Search</legend>
@@ -84,83 +84,33 @@ Licence URI: https://www.os-templates.com/template-terms
 
 <!-- ####################################################################################################### -->
 <div class="wrapper">
-  <div class="container">
-    <div class="content">
-      <h1><%= mess[0].title%></h1>
-      <p><strong><%= mess[0].describe%> </strong></p>
-      <img class="imgr" src="<%= mess[0].image%>"  alt="" width="600" height="500" />
-      <p><%= mess[0].content%></p>
-
-      <div id="comments">
-        <h2>Comments</h2>
-        <ul class="commentlist">
-        <%if (listComment.length != 0){%>
-        <%for(var i=0;i < listComment.length;i++){%>
-        <%if(i % 2 == 0){%>
-          <li class="comment_odd">
-            <div class="author"><img class="avatar" src="https://cdna.artstation.com/p/assets/images/images/003/731/234/original/pontus-ornemark-sunglasses-man-walking-animation.gif?1476900023" width="32" height="32" alt="" /><span class="name"><a href="#"><%= listComment[i].username%></a></span> <span class="wrote">wrote:</span></div>
-            <div class="submitdate"><a href="#"><%= listComment[i].date%></a></div>
-            <p><%= listComment[i].content%></p>
-          </li>
-          <%}else{%>
-            <li class="comment_even">
-            <div class="author"><img class="avatar" src="https://cdna.artstation.com/p/assets/images/images/003/235/548/original/jamie-fox-girlpoint-animatedmassive.gif?1471445378" width="32" height="32" alt="" /><span class="name"><a href="#"><%= listComment[i].username%></a></span> <span class="wrote">wrote:</span></div>
-            <div class="submitdate"><a href="#"><%= listComment[i].date%></a></div>
-            <p><%= listComment[i].content%></p>
-          </li>
-        <%}%>
-        <%}%>
-        <%}%>
-        </ul>
-      </div>
-      <h2>Write A Comment</h2>
-      <div id="respond">
-        <form action="addComment" method="post">
-          
-          <%if(kt == 1){%>
-          <p>
-          <label for="name" name="name"><small>Name : <%= user%></small></label>         
-          <input type="hidden" name="name" value="<%= iduser%>">
-          </p>
-          <input type="hidden" name="idnews" value="<%= mess[0].idnews%>">
-          <%}%>
-          
-          <p>
-            <textarea name="comment" id="comment" cols="100%" rows="10"></textarea>
-            <label for="comment" style="display:none;"><small>Comment (required)</small></label>
-          </p>
-          <p>
-            <input name="submit" type="submit" id="submit" value="Submit Form" />
-            &nbsp;
-            <input name="reset" type="reset" id="reset" tabindex="5" value="Reset Form" />
-          </p>
-        </form>
-      </div>
-    </div>
-    <div class="column">
-        <%for (var i = list.length-1; i>list.length-5;i--){%>
-      <div id="featured">
-        <ul>
-          <li>
-            <h2><%= list[i].title%></h2>
-            <p class="imgholder"><img src="<%= list[i].image%>" width="240" height="90" alt="" /></p>
-            <p><%= list[i].describe%></p>
-            <p class="readmore"><a href="/news/<%= list[i].idnews%>">Xem chi tiet &raquo;</a></p>
-          </li>
-        </ul>
-      </div>
-          <%}%>
-
-    </div>
-    <br class="clear" />
-  </div>
-</div>
-<!-- ####################################################################################################### -->
-<div class="wrapper">
+  <%if (mess.length == 0) {%>  
   <div id="adblock">
+    <h3>Không tìm thấy kết quả nào?</h3>
+    <br class="clear" />
+  </div>
+  <%}else{%>
+  <br class="clear" />
+  <div id="hpage_cats">
+    <%for (var key in mess){%>
+    <%if (key % 2 == 0) {%>
+    <div class="fl_left">
+      <img src="<%= mess[key].image%>" style="width: 100px; height: 100px" alt="" />
+      <p><strong><a href="/news/<%= mess[key].idnews%>"><%= mess[key].title%></a></strong></p>
+      <p><%= mess[key].describe%></p>
+    </div>
+    <%} else {%>
+    <div class="fl_right">
+      <img src="<%= mess[key].image%>" style="width: 100px; height: 100px" alt="" />
+      <p><strong><a href="/news/<%= mess[key].idnews%>"><%= mess[key].title%></a></strong></p>
+      <p><%= mess[key].describe%></p>
+    </div>
+    <br class="clear" />
+    <%}}}%>
     <br class="clear" />
   </div>
 </div>
+
 <!-- ####################################################################################################### -->
 <div class="wrapper">
   <div id="footer">
@@ -215,9 +165,9 @@ Licence URI: https://www.os-templates.com/template-terms
 <div class="wrapper">
   <div id="socialise">
     <ul>
-      <li><a href="#"><img src="/layout/images/facebook.gif" alt="" /><span>Facebook</span></a></li>
-      <li><a href="#"><img src="/layout/images/rss.gif" alt="" /><span>FeedBurner</span></a></li>
-      <li class="last"><a href="#"><img src="/layout/images/twitter.gif" alt="" /><span>Twitter</span></a></li>
+      <li><a href="#"><img src="/layout/images/facebook.gif"  alt="" /><span>Facebook</span></a></li>
+      <li><a href="#"><img src="/layout/images/rss.gif"  alt="" /><span>FeedBurner</span></a></li>
+      <li class="last"><a href="#"><img src="/layout/images/twitter.gif"  alt="" /><span>Twitter</span></a></li>
     </ul>
     <div id="newsletter">
       <h2>NewsLetter Sign Up !</h2>
