@@ -551,7 +551,7 @@ app.get('/admin/comment', function(req, res) {
     // tìm kiem
     app.post('/find', function(req, res) {
       var kt =0;
-      connection.query("SELECT * FROM datanews.news where datanews.news.title like ?",req.body.txtfind, function (err, result, fields) {
+      connection.query("SELECT * FROM datanews.news where datanews.news.title like ?","%"+req.body.txtfind+"%", function (err, result, fields) {
         if (err) {
           console.log(err);
           res.send('Không có từ khóa này');
