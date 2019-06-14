@@ -8,6 +8,23 @@
     var regex = require('./regex');
     AWS.config.region = process.env.REGION
 
+    var xFrameOptions = require('x-frame-options')
+    var helmet = require('helmet')
+    var xssFilter = require('x-xss-protection')
+    var cors = require('cors')
+    var app = express();
+    app.use(xFrameOptions())
+    app.use(helmet())
+    app.use(xssFilter({ setOnOldIE: true }))
+    app.use(cors())
+
+    app.set('view engine', 'ejs');
+    app.set('views', __dirname + '/views');
+    app.use(bodyParser.urlencoded({extended:false}));
+    app.use(bodyParser.json())
+    app.use(express.static(path.join(__dirname, 'static')));
+    app.use(session({ secret: 'secret', resave: true, saveUninitialized: true }));
+
 
 // var connection = mysql.createConnection({
 //   host     : 'den1.mysql2.gear.host',
@@ -49,27 +66,20 @@ connection.query("SELECT * FROM comment",function(err,result,fields){
   if(err) throw err;
   listComment=result;
 })
-    var app = express();
-
-    app.set('view engine', 'ejs');
-    app.set('views', __dirname + '/views');
-    app.use(bodyParser.urlencoded({extended:false}));
-    app.use(bodyParser.json())
-    app.use(express.static(path.join(__dirname, 'static')));
-    app.use(session({ secret: 'secret', resave: true, saveUninitialized: true }));
     //
     
     //kiểm tra đăng nhập
     app.post('/auth', function(request, response) {
     	var username = request.body.username;
       var password = request.body.password;
-      if(!username.match(regex.username)){
-        return response.send("Bạn đã nhập sai định dạng username");
-      }
-      if(!password.match(regex.patternPassword)){
-        return response.send("Bạn đã nhập sai định dạng mật khẩu");
-      }
+      
     	if (username && password) {
+        if(!username.match(regex.username)){
+          return response.send("Bạn đã nhập sai định dạng username");
+        }
+        if(!password.match(regex.patternPassword)){
+          return response.send("Bạn đã nhập sai định dạng mật khẩu");
+        }
     		connection.query('SELECT * FROM user WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
     			if (results.length > 0) {
     				request.session.loggedin = true;
@@ -106,16 +116,17 @@ connection.query("SELECT * FROM comment",function(err,result,fields){
       var password1 = request.body.password1;
       var mail = request.body.mail;
 
-      if(!username.match(regex.username)){
-        return response.send("Bạn đã nhập sai định dạng username");
-      }
-      if(!password.match(regex.patternPassword)){
-        return response.send("Bạn đã nhập sai định dạng mật khẩu");
-      }
-      if(!mail.match(regex.patternEmail)){
-        return response.send("Bạn đã nhập sai định dạng email");
-      }
+      
     	if (username && password && mail) {
+        if(!username.match(regex.username)){
+          return response.send("Bạn đã nhập sai định dạng username");
+        }
+        if(!password.match(regex.patternPassword)){
+          return response.send("Bạn đã nhập sai định dạng mật khẩu");
+        }
+        if(!mail.match(regex.patternEmail)){
+          return response.send("Bạn đã nhập sai định dạng email");
+        }
         var string = "INSERT INTO `user`(`mail`,`username`,`password`,`role`) VALUES (?,?,?,0)";
     		connection.query(string,[mail,username,password], function(err, results) {
           if (err) {
@@ -551,10 +562,15 @@ app.get('/admin/comment', function(req, res) {
     // tìm kiem
     app.post('/find', function(req, res) {
       var kt =0;
+      if(req.body.txtfind){
+        if(!req.body.txtfind.match(regex.patternInput)){
+          return res.send('Sai cú pháp');
+        }
+      }
       connection.query("SELECT * FROM datanews.news where datanews.news.title like ?","%"+req.body.txtfind+"%", function (err, result, fields) {
         if (err) {
           console.log(err);
-          res.send('Không có từ khóa này');
+          return res.send('Không có từ khóa này');
         }
         if(req.session.loggedin){
           kt=1;
