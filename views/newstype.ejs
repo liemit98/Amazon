@@ -87,28 +87,45 @@ Licence URI: https://www.os-templates.com/template-terms
       <div id="featured_slide">
         <ul id="featurednews">
           <%for(var i= mess.length-1 ; i>= mess.length-5;i--){%>
+            <%if(mess[i] != undefined){%>
           <li><img src="<%= mess[i].image%>" style="width: 100px; height: 100px" alt="" />
+            
             <div class="panel-overlay">
               <h2><%= mess[i].title%></h2>
               <p><%= mess[i].describe%><br />
                 <a href="/news/<%= mess[i].idnews%>">Xem chi tiet &raquo;</a></p>
             </div>
           </li>
+          <%}else{%>
+            <li><img src="https://media1.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" style="width: 100px; height: 100px" alt="" />
+          <%}%>
           <%}%>
         </ul>
       </div>
     </div>
     <div class="column">
       <ul class="latestnews">
+        <%if(mess[mess.length-3] != undefined){%>
         <li><img src="<%= mess[mess.length-3].image%>" style="width: 100px; height: 100px" alt="" />
           <p><strong><a href="/news/<%= mess[mess.length-3].idnews%>"><%= mess[mess.length-3].title%></a></strong><%= mess[mess.length-3].describe%> </p>
         </li>
+        <%}else{%>
+          <li><img src="https://media1.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" style="width: 100px; height: 100px" alt="" />
+        <%}%>
+        <%if(mess[mess.length-2] != undefined){%>
         <li><img src="<%= mess[mess.length-2].image%>" style="width: 100px; height: 100px" alt="" />
           <p><strong><a href="/news/<%= mess[mess.length-2].idnews%>"><%= mess[mess.length-2].title%></a></strong><%= mess[mess.length-2].describe%></p>
         </li>
+        <%}else{%>
+          <li><img src="https://media1.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" style="width: 100px; height: 100px" alt="" />
+        <%}%>
+        <%if(mess[mess.length-2] != undefined){%>
         <li class="last"><img src="<%= mess[mess.length-4].image%>" style="width: 100px; height: 100px" alt="" />
           <p><strong><a href="/news/<%= mess[mess.length-4].idnews%>"><%= mess[mess.length-4].title%></a></strong> <%= mess[mess.length-4].describe%></p>
         </li>
+        <%}else{%>
+          <li><img src="https://media1.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" style="width: 100px; height: 100px" alt="" />
+        <%}%>
       </ul>
     </div>
     <br class="clear" />
