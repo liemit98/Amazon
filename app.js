@@ -57,6 +57,7 @@ connection.query("SELECT * FROM comment",function(err,result,fields){
     app.use(bodyParser.json())
     app.use(express.static(path.join(__dirname, 'static')));
     app.use(session({ secret: 'secret', resave: true, saveUninitialized: true }));
+    //
     
     //kiểm tra đăng nhập
     app.post('/auth', function(request, response) {
@@ -129,6 +130,7 @@ connection.query("SELECT * FROM comment",function(err,result,fields){
                 mess : result,
                 type : type,
                 user : req.session.username,
+                iduser   : req.session.iduser,
                 kt   : kt
             });
           }else {
@@ -143,6 +145,7 @@ connection.query("SELECT * FROM comment",function(err,result,fields){
           }
         })
     });
+    
 // loại tin 
     app.get('/types/:type', function(req, res) {
       var kt =0 ;
@@ -157,6 +160,7 @@ connection.query("SELECT * FROM comment",function(err,result,fields){
               mess : result,
               type : type,
               user : req.session.username,
+              iduser   : req.session.iduser,
               kt   : kt
           });
         }else {
@@ -297,8 +301,67 @@ app.post('/news/addSave',function(req,res){
     res.send('phải đăng nhập hoặc không được bỏ trống commnet!!!');
     // response.end();
   }
-  
-  
+});
+
+// Quan lý người dùng
+// xem bài lưu
+app.get('/viewnews/:id', function(req, res) {
+  if(req.session.loggedin == true){
+  connection.query("SELECT * FROM datanews.user_save_news INNER JOIN datanews.news on news.idnews = user_save_news.idnews where iduser = ?",req.params.id, function (err, result, fields) {
+      if (err) throw err;
+        res.render('newsSave', {
+          static_path: 'static',
+          theme: process.env.THEME || 'flatly',
+          flask_debug: process.env.FLASK_DEBUG || 'false',
+          mess : result,
+          iduser: req.session.iduser
+      });
+  })
+}else {
+  res.redirect("/");
+}
+});
+//xóa bài lưu
+app.get('/viewnews/delete/:id', function(req, res) {
+  if(req.session.loggedin == true){
+  connection.query("DELETE FROM user_save_news WHERE iduser_save_news=?",req.params.id, function (err, result, fields) {
+      if (err) throw err;
+        var str = "/viewnews/"+req.session.iduser;
+        res.redirect(str);
+  })
+}else {
+  res.redirect("/");
+}
+});
+
+// xem quản lý bình luận
+app.get('/viewcomment/:id', function(req, res) {
+  if(req.session.loggedin == true){
+  connection.query("SELECT comment.idcomment,iduser,date,comment.content,news.title FROM datanews.comment INNER JOIN datanews.news on news.idnews = comment.idnews where iduser = ?",req.params.id, function (err, result, fields) {
+      if (err) throw err;
+        res.render('commentSave', {
+          static_path: 'static',
+          theme: process.env.THEME || 'flatly',
+          flask_debug: process.env.FLASK_DEBUG || 'false',
+          mess : result,
+          iduser: req.session.iduser
+      });
+  })
+}else {
+  res.redirect("/");
+}
+});
+//xóa bình luận
+app.get('/viewcomment/delete/:id', function(req, res) {
+  if(req.session.loggedin == true){
+  connection.query("DELETE FROM comment WHERE idcomment=?",req.params.id, function (err, result, fields) {
+      if (err) throw err;
+        var str = "/viewcomment/"+req.session.iduser;
+        res.redirect(str);
+  })
+}else {
+  res.redirect("/");
+}
 });
 // trang chủ admin.........
     app.get('/trangchuadmin', function(req, res) {
@@ -369,7 +432,7 @@ app.post('/news/addSave',function(req,res){
       if(req.session.access == true){
           connection.query("SELECT * FROM news", function (err, result, fields) {
               if (err) throw err;
-              console.log(result);
+              
                 res.render('danhsachtin', {
                   static_path: 'static',
                   theme: process.env.THEME || 'flatly',
@@ -382,7 +445,7 @@ app.post('/news/addSave',function(req,res){
         res.redirect("/");
       }
     });
-
+    // khách hàng 
     app.get('/admin/khachhang', function(req, res) {
       if(req.session.access == true){
       connection.query("SELECT * FROM user where role=0", function (err, result, fields) {
@@ -398,7 +461,18 @@ app.post('/news/addSave',function(req,res){
       res.redirect("/");
     }
     });
-
+    // xóa khách hàng
+    app.get('/admin/khachhang/delete/:id', function(req, res) {
+      if(req.session.access == true){
+      connection.query("DELETE FROM user WHERE iduser=?",req.params.id, function (err, result, fields) {
+          if (err) throw err;
+            res.redirect("/admin/khachhang");
+      })
+    }else {
+      res.redirect("/");
+    }
+    });
+    // thêm tin
     app.get('/admin/themtin', function(req, res) {
       if(req.session.access == true){
         if(req.session.sua == true){
@@ -473,6 +547,7 @@ app.get('/admin/comment', function(req, res) {
             mess : result,
             type : type,
             user : req.session.username,
+            iduser   : req.session.iduser,
             kt   : kt
         });
       }else {
