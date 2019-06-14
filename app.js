@@ -5,7 +5,7 @@
     var bodyParser = require('body-parser');
     var session = require('express-session');
     var mysql = require('mysql');
-
+    var regex = require('./regex');
     AWS.config.region = process.env.REGION
 
 
@@ -61,7 +61,13 @@ connection.query("SELECT * FROM comment",function(err,result,fields){
     //kiểm tra đăng nhập
     app.post('/auth', function(request, response) {
     	var username = request.body.username;
-    	var password = request.body.password;
+      var password = request.body.password;
+      if(!username.match(regex.username)){
+        return response.send("Bạn đã nhập sai định dạng username");
+      }
+      if(!password.match(regex.patternPassword)){
+        return response.send("Bạn đã nhập sai định dạng mật khẩu");
+      }
     	if (username && password) {
     		connection.query('SELECT * FROM user WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
     			if (results.length > 0) {
@@ -99,12 +105,21 @@ connection.query("SELECT * FROM comment",function(err,result,fields){
       var password1 = request.body.password1;
       var mail = request.body.mail;
 
+      if(!username.match(regex.username)){
+        return response.send("Bạn đã nhập sai định dạng username");
+      }
+      if(!password.match(regex.patternPassword)){
+        return response.send("Bạn đã nhập sai định dạng mật khẩu");
+      }
+      if(!mail.match(regex.patternEmail)){
+        return response.send("Bạn đã nhập sai định dạng email");
+      }
     	if (username && password && mail) {
-        var string = "INSERT INTO `user`(`mail`,`username`,`password`,`role`) VALUES ('"+mail+"','"+username+"','"+password+"',0)";
-    		connection.query(string, function(err, results) {
+        var string = "INSERT INTO `user`(`mail`,`username`,`password`,`role`) VALUES (?,?,?,0)";
+    		connection.query(string,[mail,username,password], function(err, results) {
           if (err) {
             console.log(err);
-            return request.status(500).send(err);
+            return response.status(500).send(err);
           }
           response.redirect('/login');
     		});
@@ -346,12 +361,15 @@ app.post('/news/addSave',function(req,res){
 // đổi mật khẩu và quên mật khẩu
     app.post('/chancepass', function(req, res) {
       var pass =  req.body.password1;
-      connection.query("SELECT user.iduser FROM datanews.user where user.mail = '"+req.body.mail+"' and user.username = '"+req.body.username+"'", function (err, result, fields) {
+      connection.query("SELECT user.iduser FROM datanews.user where user.mail = ? and user.username = ?",[req.body.mail,req.body.username], function (err, result, fields) {
         if (err) {
           console.log(err);
-          res.send('Email hoặc username không đúng!');
+          return res.send('Email hoặc username không đúng!');
         }
-        connection.query("UPDATE `datanews`.`user` SET `password` = '"+pass+"' WHERE (`iduser` = '"+result[0].iduser+"');", function (err, result, fields) {
+        if(result == null || result[0] == undefined){
+          return res.send('Không tìm thấy User!');
+        }
+        connection.query("UPDATE `datanews`.`user` SET `password` = ? WHERE (`iduser` = ?);",[pass,result[0].iduser], function (err, result1, fields) {
           if (err) {
             console.log(err);
             return req.status(500).send(err);
