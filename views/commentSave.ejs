@@ -34,7 +34,27 @@
 
     <%include header%>
     <!-- Left side column. contains the logo and sidebar -->
-    <%include aside%>
+    <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu" data-widget="tree">
+        <li class="header">CÁC CHỨC NĂNG CHÍNH</li>
+
+        <li>
+          <a href="/viewnews/<%=iduser%>">
+            <i class="fa fa-th"></i> <span>Bài đã lưu</span>
+          </a>
+        </li>
+        <li>
+          <a href="/viewcomment/<%=iduser%>">
+            <i class="fa fa-book"></i> <span>Bình luận</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+    <!-- /.sidebar -->
+  </aside>
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
@@ -56,7 +76,7 @@
                     <div class="col-xs-12">
                         <div class="box">
                             <div class="box-header">
-                                <h3 class="box-title">Bảng danh sách sản phẩm</h3>
+                                <h3 class="box-title">Bảng danh sách bài lưu</h3>
                             </div>
                             <div class="box-body">
                                 <div class="row">
@@ -66,38 +86,57 @@
                                             <input type="text" class="form-control" onkeyup="myFunctionSP()" id="myInput" placeholder="Tìm">
                                         </div>
                                     </div>
-                                    <div class="col-xs-2">
-                                        <div class="btn-them">
-                                            <a href="/themtin">
-                                                <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i>
-                                                    Thêm</button>
-                                            </a>
-                                        </div>
-                                    </div>
                                 </div>
                                 <table class="table table-bordered table-hover" id="myTable">
                                     <thead>
                                         <tr>
                                           <th>Id</th>
-                                          <th>Mail</th>
-                                          <th>UseName</th>
-                                          <th>PassWord</th>
+                                          <th>Title</th>
+                                          <th>Comment</th>
+                                          <th>Date</th>
                                           <th>Xóa tin</th>
                                         </tr>
                                       </thead>
                                       <tbody>
                                         <%for (var key in mess){%>
-                                        <tr>
-                                          <td><%= mess[key].iduser%></td>
-                                          <td><%= mess[key].mail%></td>
-                                          <td><%= mess[key].username%></td>
-                                          <td><%= mess[key].password%></td>
+                                        <tr>                                       
+                                          <td><%= key %></td>
+                                          <td><%= mess[key].title%></td>
+                                          <td><%= mess[key].content%></td>
+                                          <td><%= mess[key].date%></td>
                                           <td>
                                               <div>
-                                           
-                                                 <a href="/admin/khachhang/delete/<%= mess[key].iduser%>">
+
+                                                <!-- Button to Open the Modal -->
+                                                  <a href="/viewcomment/delete/<%= mess[key].idcomment%>">
                                                   <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i> Xóa</button>
-                                                </a> 
+                                                  </a>
+
+                                              <!-- The Modal -->
+                                              <div class="modal fade" id="myModal">
+                                                <div class="modal-dialog">
+                                                  <div class="modal-content">
+
+                                                    <!-- Modal Header -->
+                                                    <div class="modal-header">
+                                                      <h4 class="modal-title">Cảnh báo</h4>
+                                                      <button type="button" class="close" data-dismiss="modal">×</button>
+                                                    </div>
+
+                                                    <!-- Modal body -->
+                                                    <div class="modal-body">
+                                                      Bạn có chắc chắn muốn xóa?
+                                                    </div>
+
+                                                    <!-- Modal footer -->
+                                                    <div class="modal-footer">
+                                                      <button type="button" class="btn btn-dropbox" data-dismiss="modal">Ok</button>
+                                                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                                    </div>
+
+                                                  </div>
+                                                </div>
+                                              </div>
                                             </div>
                                           </td>
                                         </tr>
