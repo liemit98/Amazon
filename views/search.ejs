@@ -19,6 +19,7 @@ Licence URI: https://www.os-templates.com/template-terms
 <script type="text/javascript" src="/layout/scripts/galleryviewthemes/jquery.galleryview.2.1.1.min.js" ></script>
 <script type="text/javascript" src="/layout/scripts/galleryviewthemes/jquery.galleryview.setup.js" ></script>
 <!--  Homepage Specific -->
+<script type="text/javascript" src="/dist/js/validateSearch.js"></script>
 </head>
 <body id="top">
 <div class="wrapper col0">
@@ -69,10 +70,10 @@ Licence URI: https://www.os-templates.com/template-terms
       </ul>
     </div>
    <div id="liem">
-      <form action="/find" method="post">
+      <form action="/find" method="post" onsubmit="return validateSearch()">
         
           <legend>Site Search</legend>
-          <input type="text" name="txtfind"   required/>
+          <input type="text" name="txtfind"  id="txtfind" required/>
           <input type="submit" name="go" id="go" value="Tim kiem" />
       
       </form>
