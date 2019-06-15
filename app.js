@@ -42,13 +42,6 @@
   });
     
 
-// var connection = mysql.createConnection({
-//   host     : 'den1.mysql2.gear.host',
-//   user     : 'datanews',
-//   password : 'Lx4kd!?6ZYa6',
-//   port     : 3306,
-//   database : 'DataNews'
-// });
 
 var connection = mysql.createConnection({
   host     : 'den1.mysql2.gear.host',
