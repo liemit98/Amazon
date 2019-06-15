@@ -3,74 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title>Infor</title>
-    <link rel="stylesheet" href="/dist/css/login.css">
-	<script> 
-function validateSignUp()                                    
-{ 
-    var username = document.forms["RegForm"]["username"];               
-    var mail = document.forms["RegForm"]["mail"];    
-    var password = document.forms["RegForm"]["password"];  
-	var password1 = document.forms["RegForm"]["password1"];
-   
-    if (username.value == "" )                                  
-    { 
-        window.alert("Please enter your name."); 
-        username.focus(); 
-        return false; 
-    } 
-
-	if (username.value.indexOf(" ", 0) > 0 )                                  
-    { 
-        window.alert("Please enter your name."); 
-        username.focus(); 
-        return false; 
-    } 
-       
-    if (mail.value == "")                                   
-    { 
-        window.alert("Please enter a valid e-mail address."); 
-        mail.focus(); 
-        return false; 
-    } 
-   
-    if (mail.value.indexOf("@", 0) < 0)                 
-    { 
-        window.alert("Please enter a valid e-mail address."); 
-        mail.focus(); 
-        return false; 
-    } 
-   
-    if (mail.value.indexOf(".", 0) < 0)                 
-    { 
-        window.alert("Please enter a valid e-mail address."); 
-        mail.focus(); 
-        return false; 
-    } 
-   
-   
-    if (password.value == "")                        
-    { 
-        window.alert("Please enter your password"); 
-        password.focus(); 
-        return false; 
-    } 
-
-	if (password.value.indexOf(" ", 0) >= 0 )                                  
-    { 
-        window.alert("Please enter your password."); 
-        password.focus(); 
-        return false; 
-    } 
-
-	if (password.value != password1.value)                        
-    { 
-        window.alert("Your password is not the same"); 
-        password.focus(); 
-        return false; 
-    } 
-	
-    return true; 
-}</script> 
+	<link rel="stylesheet" href="/dist/css/login.css">
+	<script type="text/javascript" src="/dist/js/validateInforGuest.js"></script>
   </head>
   <body>
     <div class="login-wrap">
@@ -79,11 +13,11 @@ function validateSignUp()
         <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Forgot Password</label>
 		<input id="tab-2"  type="radio hidden" name="tab" class="sign-up"><label for="tab-2" class="tab"></label>
 		<div class="login-form">
-      <form name="RegForm" action="chancepass" method="POST" onsubmit="return validateSignUp()">
+      <form name="RegForm" action="chancepass" method="POST" onsubmit="return validateResetPass1()">
 			<div class="sign-in-htm">
 				<div class="group">
 					<label for="user" class="label">Username</label>
-					<input id="user" type="text" name="username"  class="input" required>
+					<input id="username" type="text" name="username"  class="input" required>
 				</div>
 				<div class="group">
 					<label for="mail" class="label">Mail</label>
@@ -91,11 +25,11 @@ function validateSignUp()
 				</div>	
                 <div class="group">
 					<label for="pass" class="label">New Password</label>
-					<input id="pass" name="password" type="password" class="input" data-type="password" autocomplete="off" required>
+					<input id="password" name="password" type="password" class="input" data-type="password" autocomplete="off" required>
 				</div>
 				<div class="group">
 					<label for="pass" class="label">Repeat Password</label>
-					<input id="pass" name="password1" type="password" class="input" data-type="password" autocomplete="off" required>
+					<input id="password-repeat" name="password1" type="password" class="input" data-type="password" autocomplete="off" required>
 				</div>		
 				<div class="group">
 					<input type="submit" class="button" value="Save">
@@ -107,11 +41,11 @@ function validateSignUp()
         <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Chance Password</label>
 		<input id="tab-2"  type="radio hidden" name="tab" class="sign-up"><label for="tab-2" class="tab"></label>
 		<div class="login-form">
-      <form name="RegForm" action="chancepass" method="POST" onsubmit="return validateSignUp()">
+      <form name="RegForm" action="chancepass" method="POST" onsubmit="return validateResetPass2()">
 			<div class="sign-in-htm">
 				<div class="group">
 					<label for="user" class="label">Username</label>
-					<input id="user" type="text" name="username" value="<%= mess[0].username%>" class="input" readonly>
+					<input id="username" type="text" name="username" value="<%= mess[0].username%>" class="input" readonly>
 				</div>
 				<div class="group">
 					<label for="mail" class="label">Mail</label>
@@ -119,15 +53,15 @@ function validateSignUp()
 				</div>	
                 <div class="group">
 					<label for="pass" class="label">Old Password</label>
-					<input id="pass" name="password2" type="password" class="input" data-type="password" autocomplete="off" required>
+					<input id="password-old" name="password2" type="password" class="input" data-type="password" autocomplete="off" required>
 				</div>
                 <div class="group">
 					<label for="pass" class="label">New Password</label>
-					<input id="pass" name="password" type="password" class="input" data-type="password" autocomplete="off" required>
+					<input id="password-new" name="password" type="password" class="input" data-type="password" autocomplete="off" required>
 				</div>
 				<div class="group">
 					<label for="pass" class="label">Repeat Password</label>
-					<input id="pass" name="password1" type="password" class="input" data-type="password" autocomplete="off" required>
+					<input id="password-repeat" name="password1" type="password" class="input" data-type="password" autocomplete="off" required>
 				</div>		
 				<div class="group">
 					<input type="submit" class="button" value="Save">

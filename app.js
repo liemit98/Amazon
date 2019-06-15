@@ -12,6 +12,9 @@
     var helmet = require('helmet')
     var xssFilter = require('x-xss-protection')
     var cors = require('cors')
+
+    var md5 = require('md5');
+    
     var app = express();
     app.use(xFrameOptions())
     app.use(helmet())
@@ -66,6 +69,20 @@ connection.query("SELECT * FROM comment",function(err,result,fields){
   if(err) throw err;
   listComment=result;
 })
+
+function change_alias(alias) {
+  var str = alias;
+  str = str.toLowerCase();
+  str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g,"a"); 
+  str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g,"e"); 
+  str = str.replace(/ì|í|ị|ỉ|ĩ/g,"i"); 
+  str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g,"o"); 
+  str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g,"u"); 
+  str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g,"y"); 
+  str = str.replace(/đ/g,"d");
+  str = str.trim(); 
+  return str;
+}
     //
     
     //kiểm tra đăng nhập
@@ -80,7 +97,7 @@ connection.query("SELECT * FROM comment",function(err,result,fields){
         if(!password.match(regex.patternPassword)){
           return response.send("Bạn đã nhập sai định dạng mật khẩu");
         }
-    		connection.query('SELECT * FROM user WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
+    		connection.query('SELECT * FROM user WHERE username = ? AND password = ?', [username, md5(password)], function(error, results, fields) {
     			if (results.length > 0) {
     				request.session.loggedin = true;
             request.session.username = username;
@@ -116,7 +133,6 @@ connection.query("SELECT * FROM comment",function(err,result,fields){
       var password1 = request.body.password1;
       var mail = request.body.mail;
 
-      
     	if (username && password && mail) {
         if(!username.match(regex.username)){
           return response.send("Bạn đã nhập sai định dạng username");
@@ -128,7 +144,7 @@ connection.query("SELECT * FROM comment",function(err,result,fields){
           return response.send("Bạn đã nhập sai định dạng email");
         }
         var string = "INSERT INTO `user`(`mail`,`username`,`password`,`role`) VALUES (?,?,?,0)";
-    		connection.query(string,[mail,username,password], function(err, results) {
+    		connection.query(string,[mail,username,md5(password)], function(err, results) {
           if (err) {
             console.log(err);
             return response.status(500).send(err);
@@ -221,13 +237,13 @@ connection.query("SELECT * FROM comment",function(err,result,fields){
           
           connection.query("SELECT * FROM datanews.user_save_news where idnews = "+req.params.id+" and iduser ="+req.session.iduser, function (err, result1, fields) {
             if (err) throw err;
-            console.log("news/:id - Save 1 : "+Save);
+            // console.log("news/:id - Save 1 : "+Save);
             
             if(result1.length >0){
               Save = "true";      
-              console.log("news/:id - Save 2 : "+Save);        
+              // console.log("news/:id - Save 2 : "+Save);        
             }
-            console.log("news/:id - Save 3 : "+Save);
+            // console.log("news/:id - Save 3 : "+Save);
             res.render('Content', {
               static_path: 'static',
               theme: process.env.THEME || 'flatly',
@@ -258,6 +274,8 @@ connection.query("SELECT * FROM comment",function(err,result,fields){
       }
     })
 });
+
+
 // addComment
     app.post('/news/addComment',function(req,res){
         var name = req.body.name;
@@ -267,6 +285,9 @@ connection.query("SELECT * FROM comment",function(err,result,fields){
         var idnews = req.body.idnews; 
       
         if (req.session.loggedin && comment) {
+          if(!change_alias(comment).match(regex.patternContent)){
+            return res.send("Nội dung không hợp lệ");
+          }
           var string = "INSERT INTO `datanews`.`comment` (`iduser`, `idnews`, `date`, `content`) VALUES ('"+ name +"', '"+ idnews+"', '"+ dateTime +"', '"+comment+"')";         
           connection.query(string, function(err, results) {
             if (err) {
@@ -434,7 +455,7 @@ app.get('/viewcomment/delete/:id', function(req, res) {
 });
 // đổi mật khẩu và quên mật khẩu
     app.post('/chancepass', function(req, res) {
-      var pass =  req.body.password1;
+      var pass =  md5(req.body.password1);
       connection.query("SELECT user.iduser FROM datanews.user where user.mail = ? and user.username = ?",[req.body.mail,req.body.username], function (err, result, fields) {
         if (err) {
           console.log(err);
