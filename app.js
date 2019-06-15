@@ -26,7 +26,7 @@
     app.use(bodyParser.urlencoded({extended:false}));
     app.use(bodyParser.json())
     app.use(express.static(path.join(__dirname, 'static')));
-    app.use(session({ secret: 'secret', resave: true, saveUninitialized: true, secure: true, httpOnly: true, maxAge: 3600000  }));
+    app.use(session({ cookieName: 'sessionName', secret: 'secret', resave: true, saveUninitialized: true, secure: true, httpOnly: true, maxAge: 3600000  }));
     //cookie: { secure: true, httpOnly: true, maxAge: 3600000}
     // sửa lỗi Incomplete or No Cache-control and Pragma HTTP Header Set.
     app.use(function(req, res, next) {
