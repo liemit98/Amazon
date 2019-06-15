@@ -23,8 +23,9 @@
     app.use(bodyParser.urlencoded({extended:false}));
     app.use(bodyParser.json())
     app.use(express.static(path.join(__dirname, 'static')));
-    app.use(session({ secret: 'secret', resave: true, saveUninitialized: true }));
-
+    app.use(session({ secret: 'secret', resave: true, saveUninitialized: true , cookie: { secure: true, httpOnly: true, maxAge: 3600000}}));
+    
+    
 
 // var connection = mysql.createConnection({
 //   host     : 'den1.mysql2.gear.host',
