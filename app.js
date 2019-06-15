@@ -20,14 +20,26 @@
     app.use(helmet())
     app.use(xssFilter({ setOnOldIE: true }))
     app.use(cors())
-
+    // sửa lỗi cookie
     app.set('view engine', 'ejs');
     app.set('views', __dirname + '/views');
     app.use(bodyParser.urlencoded({extended:false}));
     app.use(bodyParser.json())
     app.use(express.static(path.join(__dirname, 'static')));
-    app.use(session({ secret: 'secret', resave: true, saveUninitialized: true }));
-
+    app.use(session({ secret: 'secret', resave: true, saveUninitialized: true , cookie: { secure: true, httpOnly: true, maxAge: 3600000}}));
+    // sửa lỗi Incomplete or No Cache-control and Pragma HTTP Header Set.
+    app.use(function(req, res, next) {
+      if (req.url.match(/^\/(css|js|img|font)\/.+/)) {
+        res.setHeader('Cache-Control', 'public, max-age=3600'); // cache header
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+      }
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+      next();
+  });
+    
 
 // var connection = mysql.createConnection({
 //   host     : 'den1.mysql2.gear.host',
@@ -426,6 +438,11 @@ app.get('/viewcomment/delete/:id', function(req, res) {
     // phần đăng nhập
     app.get('/login', function(req, res) {
               req.session.destroy();
+              if (req.url.match(/^\/(css|js|img|font)\/.+/)) {
+                res.setHeader('Cache-Control', 'public, max-age=3600'); // cache header
+                res.setHeader('Pragma', 'no-cache');
+                res.setHeader('Expires', '0');
+              }
               res.render('login', {
                 static_path: 'static',
                 theme: process.env.THEME || 'flatly',
