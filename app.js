@@ -28,6 +28,8 @@
     app.use(function(req, res, next) {
       if (req.url.match(/^\/(css|js|img|font)\/.+/)) {
         res.setHeader('Cache-Control', 'public, max-age=3600'); // cache header
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
       }
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.setHeader('Pragma', 'no-cache');
@@ -417,6 +419,8 @@ app.get('/viewcomment/delete/:id', function(req, res) {
               req.session.destroy();
               if (req.url.match(/^\/(css|js|img|font)\/.+/)) {
                 res.setHeader('Cache-Control', 'public, max-age=3600'); // cache header
+                res.setHeader('Pragma', 'no-cache');
+                res.setHeader('Expires', '0');
               }
               res.render('login', {
                 static_path: 'static',
